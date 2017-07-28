@@ -18,6 +18,7 @@ import com.estimote.display.view.style.Vertical;
 import com.estimote.display.proximity.MirrorZone;
 import com.estimote.display.view.operation.ViewOperation;
 import android.util.Log;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.estimote.display.view.TableView;
@@ -79,22 +80,22 @@ public class MainActivity extends AppCompatActivity {
 
         Map<NearableID, Product> products = new HashMap<>();
         // TODO: replace with identifiers of your own nearables
-        products.put(new NearableID("1b089cf2ccbf058b"), new Product("Sweeft Headphones",
-                "These super cool headphones will make sure you'll re-discover your favorite Taylor Swift song anew. You just can't put a price tag on that!"));
+        products.put(new NearableID("1b089cf2ccbf058b"), new Product("Running Shoes",
+                "$49.99"));
         products.put(new NearableID("abcdef0000000002"), new Product("Nyan Bicycle 3x14",
                 "Rush down the local streets with this amazing bike, leaving a trail of rainbow behind you, to the awe of everyone around."));
         showroomManager = new ShowroomManager(this, products);
         showroomManager.setListener(new ShowroomManager.Listener() {
             @Override
             public void onProductPickup(Product product) {
-                ((TextView) findViewById(R.id.titleLabel)).setText(product.getName());
-                ((TextView) findViewById(R.id.descriptionLabel)).setText(product.getSummary());
+                ((EditText) findViewById(R.id.titleLabel)).setText(product.getName());
+                ((EditText) findViewById(R.id.descriptionLabel)).setText(product.getSummary());
                 findViewById(R.id.descriptionLabel).setVisibility(android.view.View.VISIBLE);
                 button2Clicked();
             }
             @Override
             public void onProductPutdown(Product product) {
-                ((TextView) findViewById(R.id.titleLabel)).setText("Pick up an object to learn more about it");
+                ((EditText) findViewById(R.id.titleLabel)).setText("Pick up an object to learn more about it");
                 findViewById(R.id.descriptionLabel).setVisibility(android.view.View.INVISIBLE);
             }
         });

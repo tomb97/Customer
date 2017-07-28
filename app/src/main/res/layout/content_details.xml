@@ -8,31 +8,4 @@
     tools:context="com.example.tombarrett.estimotemirror.Details"
     tools:showIn="@layout/activity_details">
 
-    <EditText
-        android:id="@+id/editText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Name"
-        tools:layout_editor_absoluteX="148dp"
-        tools:layout_editor_absoluteY="105dp" />
-
-    <EditText
-        android:id="@+id/editText2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="numberPassword"
-        tools:layout_editor_absoluteX="117dp"
-        tools:layout_editor_absoluteY="190dp" />
-
-    <EditText
-        android:id="@+id/editText3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textEmailAddress"
-        tools:layout_editor_absoluteX="108dp"
-        tools:layout_editor_absoluteY="372dp" />
 </android.support.constraint.ConstraintLayout>
