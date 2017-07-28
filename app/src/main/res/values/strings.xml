@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">EstimoteMirror</string>
+    <string name="title_activity_user_details">UserDetails</string>
+</resources>
