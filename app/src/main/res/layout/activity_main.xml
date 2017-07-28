@@ -7,7 +7,7 @@
     tools:context="com.example.tombarrett.estimotemirror.MainActivity">
 
     <TextView
-        android:id="@+id/view"
+        android:id="@+id/titleLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Hello World!"
@@ -32,5 +32,13 @@
         android:visibility="visible"
         tools:layout_editor_absoluteX="148dp"
         tools:layout_editor_absoluteY="382dp" />
+
+    <TextView
+        android:id="@+id/descriptionLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        tools:layout_editor_absoluteX="66dp"
+        tools:layout_editor_absoluteY="44dp" />
 
 </android.support.constraint.ConstraintLayout>

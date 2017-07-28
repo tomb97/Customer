@@ -1,12 +1,6 @@
 package com.example.tombarrett.estimotemirror.estimote;
 
-/**
- * Created by tombarrett on 28/07/2017.
- */
-
 import android.content.Context;
-import android.util.Log;
-
 
 import com.estimote.coresdk.recognition.packets.Nearable;
 import com.estimote.coresdk.service.BeaconManager;
@@ -15,24 +9,24 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Created by tombarrett on 28/07/2017.
+ */
+
 public class ShowroomManager {
 
     private Listener listener;
-    private static final String TAG = "MainActivity";
+
     private BeaconManager beaconManager;
 
     private Map<NearableID, Boolean> nearablesMotionStatus = new HashMap<>();
 
     public ShowroomManager(Context context, final Map<NearableID, Product> products) {
-
         beaconManager = new BeaconManager(context);
-        Log.d(TAG, "yaw");
         beaconManager.setNearableListener(new BeaconManager.NearableListener() {
             @Override
             public void onNearablesDiscovered(List<Nearable> list) {
-                Log.d(TAG, "any");
                 for (Nearable nearable : list) {
-                    Log.d(TAG, "Near");
                     NearableID nearableID = new NearableID(nearable.identifier);
                     if (!products.keySet().contains(nearableID)) { continue; }
 

@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.estimote.coresdk.common.config.EstimoteSDK;
+import com.estimote.coresdk.common.requirements.SystemRequirementsChecker;
 import com.estimote.display.client.MirrorClient;
 import com.estimote.display.view.View;
 import com.estimote.display.view.data.PosterViewData;
@@ -32,12 +33,14 @@ import com.example.tombarrett.estimotemirror.estimote.NearableID;
 import com.example.tombarrett.estimotemirror.estimote.Product;
 import com.example.tombarrett.estimotemirror.estimote.ShowroomManager;
 
+
 import android.widget.Button;
 import android.content.Intent;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -48,10 +51,6 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
     private ShowroomManager showroomManager;
-    private List<String> sizesAvailable;
-    private Map<NearableID, Product> products;
-    private List<String> typesAvailable;
-    private Shop shop;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,33 +77,30 @@ public class MainActivity extends AppCompatActivity {
 //        Toast.makeText(getApplicationContext(), "done!", Toast.LENGTH_LONG).show();
         this.ctxMgr = MirrorContextManager.createMirrorContextManager(this);
 
-        shop = new Shop();
-        shop.addProduct(new NearableID("1b089cf2ccbf058b"), "Running Shoes","These running shoes are like the best ever for running and things","$49.99");
-
-        setShowroomManager();
-
-    }
-
-    public void setShowroomManager(){
-        showroomManager = new ShowroomManager(this, shop.getProducts());
-        Log.d(TAG, "NUP");
+        Map<NearableID, Product> products = new HashMap<>();
+        // TODO: replace with identifiers of your own nearables
+        products.put(new NearableID("1b089cf2ccbf058b"), new Product("Sweeft Headphones",
+                "These super cool headphones will make sure you'll re-discover your favorite Taylor Swift song anew. You just can't put a price tag on that!"));
+        products.put(new NearableID("abcdef0000000002"), new Product("Nyan Bicycle 3x14",
+                "Rush down the local streets with this amazing bike, leaving a trail of rainbow behind you, to the awe of everyone around."));
+        showroomManager = new ShowroomManager(this, products);
         showroomManager.setListener(new ShowroomManager.Listener() {
             @Override
             public void onProductPickup(Product product) {
-                Log.d(TAG, product.getName());
-
-               ((TextView) findViewById(R.id.view)).setText(product.getName());
-//                ((TextView) findViewById(R.id.descriptionLabel)).setText(product.getSummary());
-//                findViewById(R.id.descriptionLabel).setVisibility(android.view.View.VISIBLE);
+                ((TextView) findViewById(R.id.titleLabel)).setText(product.getName());
+                ((TextView) findViewById(R.id.descriptionLabel)).setText(product.getSummary());
+                findViewById(R.id.descriptionLabel).setVisibility(android.view.View.VISIBLE);
+                button2Clicked();
             }
-
             @Override
             public void onProductPutdown(Product product) {
-//                ((TextView) findViewById(R.id.titleLabel)).setText("Pick up an object to learn more about it");
-//                findViewById(R.id.descriptionLabel).setVisibility(android.view.View.INVISIBLE);
+                ((TextView) findViewById(R.id.titleLabel)).setText("Pick up an object to learn more about it");
+                findViewById(R.id.descriptionLabel).setVisibility(android.view.View.INVISIBLE);
             }
         });
+
     }
+
 
     public void button1Clicked(){
         Intent i = new Intent(getBaseContext(), Details.class);
@@ -140,6 +136,20 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("Mirror","data");
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (!SystemRequirementsChecker.checkWithDefaultDialogs(this)) {
+            Log.e(TAG, "Can't scan for beacons, some pre-conditions were not met");
+            Log.e(TAG, "Read more about what's required at: http://estimote.github.io/Android-SDK/JavaDocs/com/estimote/sdk/SystemRequirementsChecker.html");
+            Log.e(TAG, "If this is fixable, you should see a popup on the app's screen right now, asking to enable what's necessary");
+        } else {
+            Log.d(TAG, "Starting ShowroomManager updates");
+            showroomManager.startUpdates();
+        }
     }
 
     @Override
