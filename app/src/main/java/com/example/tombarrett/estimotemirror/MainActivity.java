@@ -17,6 +17,7 @@ import com.estimote.display.view.style.Vertical;
 import com.estimote.display.proximity.MirrorZone;
 import com.estimote.display.view.operation.ViewOperation;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.estimote.display.view.TableView;
 import com.estimote.display.view.style.TableViewStyle;
@@ -27,6 +28,10 @@ import  com.estimote.sdk.mirror.core.common.exception.MirrorException;
 import  com.estimote.sdk.mirror.context.Zone;
 import com.estimote.sdk.mirror.context.DisplayCallback;
 import  com.estimote.display.client.DisplayConditionCreator;
+import com.example.tombarrett.estimotemirror.estimote.NearableID;
+import com.example.tombarrett.estimotemirror.estimote.Product;
+import com.example.tombarrett.estimotemirror.estimote.ShowroomManager;
+
 import android.widget.Button;
 import android.content.Intent;
 
@@ -34,11 +39,19 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity {
     private MirrorClient mirrorClient;
     private MirrorContextManager ctxMgr;
+    private static final String TAG = "MainActivity";
+
+    private ShowroomManager showroomManager;
+    private List<String> sizesAvailable;
+    private Map<NearableID, Product> products;
+    private List<String> typesAvailable;
+    private Shop shop;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,10 +78,36 @@ public class MainActivity extends AppCompatActivity {
 //        Toast.makeText(getApplicationContext(), "done!", Toast.LENGTH_LONG).show();
         this.ctxMgr = MirrorContextManager.createMirrorContextManager(this);
 
+        shop = new Shop();
+        shop.addProduct(new NearableID("1b089cf2ccbf058b"), "Running Shoes","These running shoes are like the best ever for running and things","$49.99");
+
+        setShowroomManager();
+
+    }
+
+    public void setShowroomManager(){
+        showroomManager = new ShowroomManager(this, shop.getProducts());
+        Log.d(TAG, "NUP");
+        showroomManager.setListener(new ShowroomManager.Listener() {
+            @Override
+            public void onProductPickup(Product product) {
+                Log.d(TAG, product.getName());
+
+               ((TextView) findViewById(R.id.view)).setText(product.getName());
+//                ((TextView) findViewById(R.id.descriptionLabel)).setText(product.getSummary());
+//                findViewById(R.id.descriptionLabel).setVisibility(android.view.View.VISIBLE);
+            }
+
+            @Override
+            public void onProductPutdown(Product product) {
+//                ((TextView) findViewById(R.id.titleLabel)).setText("Pick up an object to learn more about it");
+//                findViewById(R.id.descriptionLabel).setVisibility(android.view.View.INVISIBLE);
+            }
+        });
     }
 
     public void button1Clicked(){
-        Intent i = new Intent(getBaseContext(), UserDetails.class);
+        Intent i = new Intent(getBaseContext(), Details.class);
         startActivity(i);
     }
     //anywhere: works
@@ -101,6 +140,19 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("Mirror","data");
             }
         });
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d(TAG, "Stopping ShowroomManager updates");
+        showroomManager.stopUpdates();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        showroomManager.destroy();
     }
 
 }

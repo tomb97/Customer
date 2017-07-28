@@ -24,10 +24,13 @@ public class ShowroomManager {
     private Map<NearableID, Boolean> nearablesMotionStatus = new HashMap<>();
 
     public ShowroomManager(Context context, final Map<NearableID, Product> products) {
+
         beaconManager = new BeaconManager(context);
+        Log.d(TAG, "yaw");
         beaconManager.setNearableListener(new BeaconManager.NearableListener() {
             @Override
             public void onNearablesDiscovered(List<Nearable> list) {
+                Log.d(TAG, "any");
                 for (Nearable nearable : list) {
                     Log.d(TAG, "Near");
                     NearableID nearableID = new NearableID(nearable.identifier);
