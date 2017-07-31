@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import com.estimote.coresdk.common.config.EstimoteSDK;
 import com.estimote.coresdk.common.requirements.SystemRequirementsChecker;
+//import com.estimote.display.client.DisplayCallback;
 import com.estimote.display.client.MirrorClient;
 import com.estimote.display.view.View;
 import com.estimote.display.view.data.PosterViewData;
@@ -47,10 +48,9 @@ import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity {
-    private MirrorClient mirrorClient;
     private MirrorContextManager ctxMgr;
     private static final String TAG = "MainActivity";
-
+    private MirrorClient mirrorClient;
     private ShowroomManager showroomManager;
 
     @Override
@@ -59,12 +59,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         EstimoteSDK.initialize(getApplicationContext(), "toms-location-odr", "c76685df7fdccaec45b617c18cf50bdc");
 
-
         Button button= (Button) findViewById(R.id.button);
         button.setOnClickListener(new android.view.View.OnClickListener() {
             @Override
             public void onClick(android.view.View view) {
-                button1Clicked();
+                buttonClicked();
             }
         });
 
@@ -79,11 +78,11 @@ public class MainActivity extends AppCompatActivity {
         this.ctxMgr = MirrorContextManager.createMirrorContextManager(this);
 
         Map<NearableID, Product> products = new HashMap<>();
-        // TODO: replace with identifiers of your own nearables
         products.put(new NearableID("1b089cf2ccbf058b"), new Product("Running Shoes",
-                "$49.99"));
-        products.put(new NearableID("abcdef0000000002"), new Product("Nyan Bicycle 3x14",
-                "Rush down the local streets with this amazing bike, leaving a trail of rainbow behind you, to the awe of everyone around."));
+                "$49.99", "retail"));
+        products.put(new NearableID("22aaab0c27180003"), new Product("Bike",
+                "$99.99", "bike"));
+
         showroomManager = new ShowroomManager(this, products);
         showroomManager.setListener(new ShowroomManager.Listener() {
             @Override
@@ -91,19 +90,55 @@ public class MainActivity extends AppCompatActivity {
                 ((EditText) findViewById(R.id.titleLabel)).setText(product.getName());
                 ((EditText) findViewById(R.id.descriptionLabel)).setText(product.getSummary());
                 findViewById(R.id.descriptionLabel).setVisibility(android.view.View.VISIBLE);
-                button2Clicked();
+                mirror(product.getTemplate());
             }
             @Override
             public void onProductPutdown(Product product) {
-                ((EditText) findViewById(R.id.titleLabel)).setText("Pick up an object to learn more about it");
-                findViewById(R.id.descriptionLabel).setVisibility(android.view.View.INVISIBLE);
+                //clear text?
             }
         });
 
     }
 
 
-    public void button1Clicked(){
+    public void buttonClicked(){
+//        PosterViewData posterData = new PosterViewData.Builder()
+//                .setHeader("Hello, world!")
+//                .setBody("Programmable screen is here.")
+//                .setImage("assets/shoe_big.jpg")
+//                .create();
+//
+//        PosterViewStyle posterStyle = new PosterViewStyle.Builder()
+//                .setTextAlign("center")
+//                .setTextPosition(new Position(Horizontal.center(), Vertical.bottom(80)))
+//                .setImagePosition(new Position(Horizontal.center(), Vertical.top(80)))
+//                .create();
+//
+//        PosterView poster = new PosterView(posterData, posterStyle);
+//
+//        this.mirrorClient = new MirrorClient.Builder(this)
+//                .useMirrorWithIds("48369681e46b3b449c0c9ecb3200e322")
+//                .setDebugModeEnabled(true)
+//                .setRepeatableDisplayRequests(true)
+//                .build();
+//
+//        this.mirrorClient.when(MirrorZone.NEAR).thenShow(poster, new com.estimote.display.client.DisplayCallback() {
+//            @Override
+//            public void onViewOperationDone(ViewOperation viewOperation,
+//                                            com.estimote.display.view.View view) {
+//                Log.d("Mirror", "Yay!");
+//            }
+//
+//            @Override
+//            public void onViewOperationFailed(ViewOperation show,
+//                                              com.estimote.display.view.View view, String message) {
+//                Log.d("Mirror", "Oh no!");
+//            }
+//        });
+    }
+
+
+    public void button2Clicked(){
         Intent i = new Intent(getBaseContext(), Details.class);
         startActivity(i);
     }
@@ -111,11 +146,42 @@ public class MainActivity extends AppCompatActivity {
     //immediate: works right next to
     //near: works right next to
     //far: works far and also near and right next to
-    public void button2Clicked(){
+    public void mirror(String template){
+        this.ctxMgr.clearDisplayRequests();
+
         Dictionary dictionary2 = new Dictionary();
-        dictionary2.setTemplate("retail");
+        dictionary2.setTemplate(template);
+        dictionary2.put("zone","near");
+
+        Dictionary dictionary = new Dictionary();
+        dictionary.setTemplate(template);
+        dictionary.put("zone","far");
         Log.d("Mirror","plz");
-        this.ctxMgr.display(dictionary2, Zone.WHEREVER_YOU_ARE, new DisplayCallback() {
+
+        this.ctxMgr.display(dictionary, Zone.FAR, new DisplayCallback() {
+
+            @Override
+            public void onDataDisplayed() {
+                Log.d("Mirror","Display");
+            }
+
+            @Override
+            public void onFinish() {
+                Log.d("Mirror","finish");
+            }
+
+            @Override
+            public void onFailure(MirrorException exception) {
+                Log.d("Mirror","fail");
+            }
+
+            @Override
+            public void onData(JSONObject data){
+                Log.d("Mirror","data");
+            }
+        });
+
+        this.ctxMgr.display(dictionary2, Zone.NEAR, new DisplayCallback() {
 
             @Override
             public void onDataDisplayed() {

@@ -8,10 +8,12 @@ public class Product {
 
     private String name;
     private String summary;
+    private String template;
 
-    public Product(String name, String summary) {
+    public Product(String name, String summary, String template) {
         this.name = name;
         this.summary = summary;
+        this.template=template;
     }
 
     public String getName() {
@@ -21,4 +23,6 @@ public class Product {
     public String getSummary() {
         return summary;
     }
+
+    public String getTemplate() { return template; }
 }
