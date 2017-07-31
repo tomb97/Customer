@@ -59,14 +59,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         EstimoteSDK.initialize(getApplicationContext(), "toms-location-odr", "c76685df7fdccaec45b617c18cf50bdc");
 
-        Button button= (Button) findViewById(R.id.button);
-        button.setOnClickListener(new android.view.View.OnClickListener() {
-            @Override
-            public void onClick(android.view.View view) {
-                buttonClicked();
-            }
-        });
-
         Button button2= (Button) findViewById(R.id.button2);
         button2.setOnClickListener(new android.view.View.OnClickListener() {
             @Override
@@ -87,8 +79,8 @@ public class MainActivity extends AppCompatActivity {
         showroomManager.setListener(new ShowroomManager.Listener() {
             @Override
             public void onProductPickup(Product product) {
-                ((EditText) findViewById(R.id.titleLabel)).setText(product.getName());
-                ((EditText) findViewById(R.id.descriptionLabel)).setText(product.getSummary());
+                ((TextView) findViewById(R.id.titleLabel)).setText(product.getName());
+                ((TextView) findViewById(R.id.descriptionLabel)).setText(product.getSummary());
                 findViewById(R.id.descriptionLabel).setVisibility(android.view.View.VISIBLE);
                 mirror(product.getTemplate());
             }
@@ -99,44 +91,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-
-
-    public void buttonClicked(){
-//        PosterViewData posterData = new PosterViewData.Builder()
-//                .setHeader("Hello, world!")
-//                .setBody("Programmable screen is here.")
-//                .setImage("assets/shoe_big.jpg")
-//                .create();
-//
-//        PosterViewStyle posterStyle = new PosterViewStyle.Builder()
-//                .setTextAlign("center")
-//                .setTextPosition(new Position(Horizontal.center(), Vertical.bottom(80)))
-//                .setImagePosition(new Position(Horizontal.center(), Vertical.top(80)))
-//                .create();
-//
-//        PosterView poster = new PosterView(posterData, posterStyle);
-//
-//        this.mirrorClient = new MirrorClient.Builder(this)
-//                .useMirrorWithIds("48369681e46b3b449c0c9ecb3200e322")
-//                .setDebugModeEnabled(true)
-//                .setRepeatableDisplayRequests(true)
-//                .build();
-//
-//        this.mirrorClient.when(MirrorZone.NEAR).thenShow(poster, new com.estimote.display.client.DisplayCallback() {
-//            @Override
-//            public void onViewOperationDone(ViewOperation viewOperation,
-//                                            com.estimote.display.view.View view) {
-//                Log.d("Mirror", "Yay!");
-//            }
-//
-//            @Override
-//            public void onViewOperationFailed(ViewOperation show,
-//                                              com.estimote.display.view.View view, String message) {
-//                Log.d("Mirror", "Oh no!");
-//            }
-//        });
-    }
-
 
     public void button2Clicked(){
         Intent i = new Intent(getBaseContext(), Details.class);
