@@ -96,10 +96,7 @@ public class MainActivity extends AppCompatActivity {
         Intent i = new Intent(getBaseContext(), Details.class);
         startActivity(i);
     }
-    //anywhere: works
-    //immediate: works right next to
-    //near: works right next to
-    //far: works far and also near and right next to
+
     public void mirror(String template){
         this.ctxMgr.clearDisplayRequests();
 
