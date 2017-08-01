@@ -27,9 +27,9 @@ public class ShowroomManager {
         beaconManager.setNearableListener(new BeaconManager.NearableListener() {
             @Override
             public void onNearablesDiscovered(List<Nearable> list) {
-                Log.d("test","found");
+             //   Log.d("test","found");
                 for (Nearable nearable : list) {
-                    Log.d("near",nearable.identifier.toString());
+               //     Log.d("near",nearable.identifier.toString());
                     NearableID nearableID = new NearableID(nearable.identifier);
                     if (!products.keySet().contains(nearableID)) { continue; }
 

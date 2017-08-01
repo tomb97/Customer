@@ -1,6 +1,8 @@
 package com.example.tombarrett.estimotemirror;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -77,16 +79,50 @@ public class MainActivity extends AppCompatActivity {
 
         showroomManager = new ShowroomManager(this, products);
         showroomManager.setListener(new ShowroomManager.Listener() {
+            private Product product;
             @Override
             public void onProductPickup(Product product) {
-                ((TextView) findViewById(R.id.titleLabel)).setText(product.getName());
-                ((TextView) findViewById(R.id.descriptionLabel)).setText(product.getSummary());
-                findViewById(R.id.descriptionLabel).setVisibility(android.view.View.VISIBLE);
+                this.product=product;
+                try {
+                    SQLiteDatabase db = openOrCreateDatabase("MyDB", MODE_PRIVATE, null);
+                    db.execSQL("CREATE TABLE IF NOT EXISTS UserDetails(ID VARCHAR PRIMARY KEY,NAME VARCHAR," +
+                            " EMAIL VARCHAR, ADDRESS VARCHAR, PANT VARCHAR, SHOE VARCHAR, TOP VARCHAR);");
+                    Cursor resultSet = db.rawQuery("SELECT * FROM UserDetails WHERE ID='1';", null);
+                    if (resultSet != null && resultSet.moveToFirst()) {
+                        AWSSNSManager awssnsManager = new AWSSNSManager();
+                        awssnsManager.publishMessage(("Customer " + resultSet.getString(1) + " is interested in " + product.getName() + " in size " + resultSet.getString(5)), "Customer is interested in a product!");
+                    }
+                    else{
+                        Log.d("SNS","crash");
+                    }
+                    updateViews();
+                }
+                catch (Exception ex){
+                    Log.d("SNS","dbcrash");
+                }
                 mirror(product.getTemplate());
             }
             @Override
             public void onProductPutdown(Product product) {
                 //clear text?
+            }
+
+            public void updateViews(){
+                ((TextView) findViewById(R.id.titleLabel)).setText(product.getName());
+                ((TextView) findViewById(R.id.descriptionLabel)).setText(product.getSummary());
+                ((TextView) findViewById(R.id.priceLabel)).setText(product.getSummary());
+                findViewById(R.id.descriptionLabel).setVisibility(android.view.View.VISIBLE);
+                findViewById(R.id.titleLabel).setVisibility(android.view.View.VISIBLE);
+                findViewById(R.id.priceLabel).setVisibility(android.view.View.VISIBLE);
+                findViewById(R.id.sizeLabel).setVisibility(android.view.View.VISIBLE);
+                findViewById(R.id.colorLabel).setVisibility(android.view.View.VISIBLE);
+                findViewById(R.id.radioButton10).setVisibility(android.view.View.VISIBLE);
+                findViewById(R.id.radioButton11).setVisibility(android.view.View.VISIBLE);
+                findViewById(R.id.radioButton12).setVisibility(android.view.View.VISIBLE);
+                findViewById(R.id.radioButton13).setVisibility(android.view.View.VISIBLE);
+                findViewById(R.id.radioButton14).setVisibility(android.view.View.VISIBLE);
+                findViewById(R.id.radioButton15).setVisibility(android.view.View.VISIBLE);
+                findViewById(R.id.imageView4).setVisibility(android.view.View.VISIBLE);
             }
         });
 
