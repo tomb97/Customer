@@ -23,14 +23,6 @@
     <include layout="@layout/content_details"
         android:id="@+id/include" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -39,19 +31,20 @@
             android:id="@+id/button3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="80dp"
-            android:text="Save"
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="19dp" />
+            android:layout_marginBottom="20dp"
+            android:layout_marginEnd="21dp"
+            android:background="@drawable/mybutton"
+            android:text="Save" />
 
         <EditText
             android:id="@+id/editText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
+            android:layout_alignEnd="@+id/button3"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="72dp"
+            android:layout_marginTop="74dp"
             android:ems="10"
             android:inputType="textPersonName" />
 
@@ -69,8 +62,9 @@
             android:id="@+id/editText3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/editText2"
             android:layout_below="@+id/editText2"
-            android:layout_marginTop="34dp"
+            android:layout_marginTop="31dp"
             android:ems="10"
             android:inputType="textPostalAddress"
             android:text="  " />
@@ -79,9 +73,9 @@
             android:id="@+id/editText4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
+            android:layout_alignStart="@+id/editText3"
             android:layout_below="@+id/editText3"
-            android:layout_marginTop="34dp"
+            android:layout_marginTop="36dp"
             android:ems="10"
             android:inputType="textPersonName"
             android:text="  " />
@@ -90,8 +84,9 @@
             android:id="@+id/editText7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/button3"
-            android:layout_alignParentStart="true"
+            android:layout_alignStart="@+id/editText4"
+            android:layout_below="@+id/editText4"
+            android:layout_marginTop="31dp"
             android:ems="10"
             android:inputType="textPersonName"
             android:text="  " />
@@ -100,12 +95,64 @@
             android:id="@+id/editText8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/editText7"
-            android:layout_marginTop="39dp"
+            android:layout_above="@+id/button3"
+            android:layout_alignEnd="@+id/button3"
+            android:layout_marginBottom="14dp"
             android:ems="10"
             android:inputType="textPersonName"
             android:text="  " />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/editText2"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="11dp"
+            android:layout_marginStart="22dp"
+            android:text="TextView" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/textView"
+            android:layout_alignTop="@+id/editText2"
+            android:text="TextView" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/textView2"
+            android:layout_alignTop="@+id/editText3"
+            android:text="TextView" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/textView3"
+            android:layout_alignTop="@+id/editText4"
+            android:text="TextView" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:layout_alignBaseline="@+id/editText7"
+            android:layout_alignBottom="@+id/editText7"
+            android:layout_alignStart="@+id/textView4" />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:layout_alignBaseline="@+id/editText8"
+            android:layout_alignBottom="@+id/editText8"
+            android:layout_alignStart="@+id/textView5" />
     </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>

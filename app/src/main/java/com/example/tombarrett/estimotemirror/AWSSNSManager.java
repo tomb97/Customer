@@ -17,19 +17,19 @@ import com.amazonaws.services.sns.model.PublishRequest;
 
 public class AWSSNSManager {
 
-    private Runnable publish(final String message, final String subject) {
+    private Runnable publish(final String message, final String subject, final String arn) {
 
         Runnable aRunnable = new Runnable() {
             @Override
             public void run() {
                 try {
-                    AmazonSNSClient snsClient = new AmazonSNSClient(new BasicAWSCredentials("AKIAJT4WSAC5YXUP2IWA", "kKVuvJQd1Mh1C81tz0xDGqJC1TB9SHxy3LTiroM7"));
+                    AmazonSNSClient snsClient = new AmazonSNSClient(new BasicAWSCredentials());
                     snsClient.setRegion(Region.getRegion(Regions.EU_WEST_1));
                     Log.d("sns", "client");
                     PublishRequest publishRequest = new PublishRequest();
                     publishRequest.setMessage(message);
                     publishRequest.setSubject(subject);
-                    publishRequest.withTargetArn("arn:aws:sns:eu-west-1:151762801558:Estimote");
+                    publishRequest.withTargetArn(arn);
                     Log.d("sns", "request");
                     snsClient.publish(publishRequest);
                     Log.d("sns", "requested");
@@ -44,11 +44,18 @@ public class AWSSNSManager {
 
     AWSSNSManager(){}
 
-    public void publishMessage(String message, String subject){
-        Runnable myRunnable = publish(message,subject);
+    public void publishMessageToShopAssistant(String message, String subject){
+        String TargetARN="arn:aws:sns:eu-west-1:151762801558:Estimote";
+        Runnable myRunnable = publish(message,subject,TargetARN);
         Thread thread = new Thread(myRunnable);
         thread.start();
+    }
 
+    public void publishMessageToCustomer(String message, String subject){
+        String TargetARN="arn:aws:sns:eu-west-1:151762801558:Receipt";
+        Runnable myRunnable = publish(message,subject,TargetARN);
+        Thread thread = new Thread(myRunnable);
+        thread.start();
     }
 
 
