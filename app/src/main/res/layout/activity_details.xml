@@ -25,7 +25,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@drawable/back1">
 
         <Button
             android:id="@+id/button3"
@@ -110,7 +111,7 @@
             android:layout_alignParentStart="true"
             android:layout_marginBottom="11dp"
             android:layout_marginStart="22dp"
-            android:text="TextView" />
+            android:text="Name" />
 
         <TextView
             android:id="@+id/textView2"
@@ -118,7 +119,7 @@
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/textView"
             android:layout_alignTop="@+id/editText2"
-            android:text="TextView" />
+            android:text="Email" />
 
         <TextView
             android:id="@+id/textView3"
@@ -126,7 +127,7 @@
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/textView2"
             android:layout_alignTop="@+id/editText3"
-            android:text="TextView" />
+            android:text="Address" />
 
         <TextView
             android:id="@+id/textView4"
@@ -134,7 +135,7 @@
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/textView3"
             android:layout_alignTop="@+id/editText4"
-            android:text="TextView" />
+            android:text="Pants Size" />
 
         <TextView
             android:id="@+id/textView5"
@@ -143,7 +144,7 @@
             android:layout_alignBaseline="@+id/editText7"
             android:layout_alignBottom="@+id/editText7"
             android:layout_alignStart="@+id/textView4"
-            android:text="TextView" />
+            android:text="Shoe Size" />
 
         <TextView
             android:id="@+id/textView6"
@@ -152,7 +153,7 @@
             android:layout_alignBaseline="@+id/editText8"
             android:layout_alignBottom="@+id/editText8"
             android:layout_alignStart="@+id/textView5"
-            android:text="TextView" />
+            android:text="Top Size" />
     </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>

@@ -3,8 +3,11 @@ package com.example.tombarrett.estimotemirror;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,8 +28,8 @@ public class Tokens extends AppCompatActivity {
     };
 
     String[] listviewShortDescription = new String[]{
-            "Android ListView Short Description", "Android ListView Short Description", "Android ListView Short Description", "Android ListView Short Description",
-            "Android ListView Short Description", "Android ListView Short Description", "Android ListView Short Description", "Android ListView Short Description",
+            "Token for nike shoes: 10 points!", "Token for Chanel perfume: 25 points", "Token for Trek Bike: 35 points", "Token for a can of coke: 2 points",
+            "Token for any Tall Coffee: 5 points", "Token for our new range of RayBans: 50 points", "Token for Canon lense: 30 points", "Token for the Galaxy S8: 70 points",
     };
 
 
@@ -53,6 +56,19 @@ public class Tokens extends AppCompatActivity {
         SimpleAdapter simpleAdapter = new SimpleAdapter(getBaseContext(), aList, R.layout.list, from, to);
         ListView androidListView = (ListView) findViewById(R.id.listv);
         androidListView.setAdapter(simpleAdapter);
+
+        androidListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String message= listviewShortDescription[i];
+                toastMessage(message);
+            }
+        });
+    }
+
+    public void toastMessage(String message){
+        Toast.makeText(this, message,
+                Toast.LENGTH_LONG).show();
     }
 
 

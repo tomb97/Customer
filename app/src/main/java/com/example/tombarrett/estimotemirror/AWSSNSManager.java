@@ -9,6 +9,7 @@ import com.amazonaws.auth.ClasspathPropertiesFileCredentialsProvider;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.sns.AmazonSNSClient;
+import com.amazonaws.services.sns.model.GetEndpointAttributesRequest;
 import com.amazonaws.services.sns.model.PublishRequest;
 
 /**

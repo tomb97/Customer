@@ -45,7 +45,7 @@ public class Product {
     public String getPrice() { return price; }
 
     public String getEmailMessageSA(String name, String size){
-        emailMessageSA= ("Customer " + name + " is interested in " + getName() + " in size " + size);
+        emailMessageSA= ("Customer " + name + " is interested in " + getName() + " in size " + size+". This product is in stock!");
         return emailMessageSA;
     }
 
