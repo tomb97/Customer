@@ -23,7 +23,7 @@ public class AWSSNSManager {
             @Override
             public void run() {
                 try {
-                    AmazonSNSClient snsClient = new AmazonSNSClient(new BasicAWSCredentials());
+                    AmazonSNSClient snsClient = new AmazonSNSClient(new BasicAWSCredentials("", ""));
                     snsClient.setRegion(Region.getRegion(Regions.EU_WEST_1));
                     Log.d("sns", "client");
                     PublishRequest publishRequest = new PublishRequest();

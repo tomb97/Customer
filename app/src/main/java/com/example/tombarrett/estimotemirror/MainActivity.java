@@ -1,50 +1,16 @@
 package com.example.tombarrett.estimotemirror;
 
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-
-import com.estimote.coresdk.cloud.api.CloudCallback;
 import com.estimote.coresdk.common.config.EstimoteSDK;
-import com.estimote.coresdk.common.exception.EstimoteCloudException;
 import com.estimote.coresdk.common.requirements.SystemRequirementsChecker;
-//import com.estimote.display.client.DisplayCallback;
-import com.estimote.coresdk.observation.region.beacon.BeaconRegion;
-import com.estimote.coresdk.recognition.packets.EstimoteLocation;
-import com.estimote.coresdk.service.BeaconManager;
 import com.estimote.display.client.MirrorClient;
-import com.estimote.display.view.View;
-import com.estimote.display.view.data.PosterViewData;
-import com.estimote.display.view.style.PosterViewStyle;
-import com.estimote.display.view.data.PosterViewData;
-import com.estimote.display.view.style.Position;
-import com.estimote.display.view.PosterView;
-import com.estimote.display.view.style.Horizontal;
-import com.estimote.display.view.style.Vertical;
-import com.estimote.display.proximity.MirrorZone;
-import com.estimote.display.view.operation.ViewOperation;
 import android.util.Log;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-import com.estimote.display.view.TableView;
-import com.estimote.display.view.style.TableViewStyle;
-import com.estimote.display.view.data.TableViewData;
-import com.estimote.indoorsdk.algorithm.IndoorLocationManager;
-import com.estimote.indoorsdk.algorithm.OnPositionUpdateListener;
-import com.estimote.indoorsdk.cloud.IndoorCloudManager;
-import com.estimote.indoorsdk.cloud.IndoorCloudManagerFactory;
-import com.estimote.indoorsdk.cloud.Location;
-import com.estimote.indoorsdk.cloud.LocationPosition;
 import  com.estimote.sdk.mirror.context.MirrorContextManager;
-import  com.estimote.sdk.mirror.core.connection.Dictionary;
-import  com.estimote.sdk.mirror.core.common.exception.MirrorException;
-import  com.estimote.sdk.mirror.context.Zone;
-import com.estimote.sdk.mirror.context.DisplayCallback;
-import  com.estimote.display.client.DisplayConditionCreator;
 import com.example.tombarrett.estimotemirror.estimote.NearableID;
 import com.example.tombarrett.estimotemirror.estimote.Product;
 import com.example.tombarrett.estimotemirror.estimote.ShowroomManager;
@@ -52,6 +18,7 @@ import com.example.tombarrett.estimotemirror.estimote.ShowroomManager;
 
 import android.widget.Button;
 import android.content.Intent;
+import android.widget.Toast;
 
 import org.json.JSONObject;
 
@@ -73,6 +40,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         EstimoteSDK.initialize(getApplicationContext(), "toms-location-odr", "c76685df7fdccaec45b617c18cf50bdc");
 
+        Toast.makeText(this, "Please maintain user details by clicking on the User Details button.\nOnce this is done, pick up a product for more information.",
+                Toast.LENGTH_LONG).show();
+
         Button button2= (Button) findViewById(R.id.button2);
         button2.setOnClickListener(new android.view.View.OnClickListener() {
             @Override
@@ -85,6 +55,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(android.view.View view) {
                 redeemCoupon();
+            }
+        });
+        Button tokenbutton= (Button) findViewById(R.id.button4);
+        tokenbutton.setOnClickListener(new android.view.View.OnClickListener() {
+            @Override
+            public void onClick(android.view.View view) {
+                token();
             }
         });
 
@@ -147,6 +124,11 @@ public class MainActivity extends AppCompatActivity {
                 img.setImageResource(product.getImage());
             }
         });
+    }
+
+    public void token(){
+        Intent i = new Intent(getBaseContext(), Tokens.class);
+        startActivity(i);
     }
 
     public void button2Clicked(){

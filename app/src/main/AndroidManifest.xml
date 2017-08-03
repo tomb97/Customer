@@ -8,6 +8,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:hardwareAccelerated="false"
+        android:largeHeap="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -23,6 +25,10 @@
         <activity
             android:name=".Payment"
             android:label="@string/title_activity_payment"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Tokens"
+            android:label="@string/title_activity_tokens"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

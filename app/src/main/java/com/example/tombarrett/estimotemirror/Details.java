@@ -55,7 +55,7 @@ public class Details extends AppCompatActivity {
         }
         else{
             Log.d("DB","Empty");
-            db.execSQL("INSERT INTO UserDetails VALUES('1','1','1','1','1','1','1');");
+            db.execSQL("INSERT INTO UserDetails VALUES('1',' ',' ',' ',' ',' ',' ');");
             db.close();
         }
         Button buttonSave= (Button) findViewById(R.id.button3);
