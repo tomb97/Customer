@@ -2,17 +2,26 @@ package com.example.tombarrett.estimotemirror;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.wifi.WifiManager;
+import android.provider.Settings;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import com.estimote.coresdk.common.config.EstimoteSDK;
 import com.estimote.coresdk.common.requirements.SystemRequirementsChecker;
 import com.estimote.display.client.MirrorClient;
+
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.estimote.display.view.View;
 import  com.estimote.sdk.mirror.context.MirrorContextManager;
 import com.example.tombarrett.estimotemirror.estimote.NearableID;
 import com.example.tombarrett.estimotemirror.estimote.Product;
@@ -40,37 +49,26 @@ public class MainActivity extends AppCompatActivity {
     private ShowroomManager showroomManager;
     private Map<NearableID, Product> products;
     private Context context=this;
+    private Product tempProduct;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(activity_main);
+        setTitle("Product Display");
+        Toast.makeText(this, "Please turn on WiFi.",
+                Toast.LENGTH_LONG).show();
+        startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+        initiateListeners();
+    }
+
+    public void initiateListeners(){
         EstimoteSDK.initialize(getApplicationContext(), "toms-location-odr", "c76685df7fdccaec45b617c18cf50bdc");
 
         Toast.makeText(this, "Please maintain user details by clicking on the User Details button.\nOnce this is done, pick up a product for more information.",
                 Toast.LENGTH_LONG).show();
 
-        Button button2= (Button) findViewById(R.id.button2);
-        button2.setOnClickListener(new android.view.View.OnClickListener() {
-            @Override
-            public void onClick(android.view.View view) {
-                button2Clicked();
-            }
-        });
-        Button button= (Button) findViewById(R.id.button);
-        button.setOnClickListener(new android.view.View.OnClickListener() {
-            @Override
-            public void onClick(android.view.View view) {
-                redeemCoupon();
-            }
-        });
-        Button tokenbutton= (Button) findViewById(R.id.button4);
-        tokenbutton.setOnClickListener(new android.view.View.OnClickListener() {
-            @Override
-            public void onClick(android.view.View view) {
-                token();
-            }
-        });
+        setButtons();
 
         this.ctxMgr = MirrorContextManager.createMirrorContextManager(this);
 
@@ -82,32 +80,39 @@ public class MainActivity extends AppCompatActivity {
             private Product product;
             @Override
             public void onProductPickup(final Product product) {
-                ImageView image = new ImageView(context);
-                image.setImageResource(product.getImage());
+                if(product!=tempProduct) {
+                    final android.view.View currentFocus = getWindow().getCurrentFocus();
+                    ImageView image = new ImageView(context);
+                    image.setImageResource(product.getImage());
+                    AlertDialog.Builder alert = new AlertDialog.Builder(context);
+                    alert.setMessage("Do you want to view this product?");
+                    alert.setCancelable(false);
+                    alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            destroyMirror();
+                            setContentView(activity_main);
+                            pickup(product);
+                            tempProduct = product;
+                        }
+                    });
+                    setContentView(image);
 
-                AlertDialog.Builder alert= new AlertDialog.Builder(context);
-                alert.setMessage("Do you want to view this product?");
-                alert.setCancelable(false);
-                alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        setContentView(activity_main);
-                        pickup(product);
-                    }
-                });
-                setContentView(image);
-
-                alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        setContentView(activity_main);
-                    }
-                });
-                alert.create().show();
+                    alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            setContentView(activity_main);
+                            setButtons();
+                            if (tempProduct != null)
+                                pickup(tempProduct);
+                        }
+                    });
+                    alert.create().show();
+                }
             }
             @Override
             public void onProductPutdown(Product product) {
-                //clear text?
+                tempProduct=product;
             }
 
             public void updateViews(){
@@ -121,14 +126,16 @@ public class MainActivity extends AppCompatActivity {
                 findViewById(R.id.colorLabel).setVisibility(android.view.View.VISIBLE);
                 findViewById(R.id.radioButton10).setVisibility(android.view.View.VISIBLE);
                 findViewById(R.id.radioButton11).setVisibility(android.view.View.VISIBLE);
-                findViewById(R.id.radioButton12).setVisibility(android.view.View.VISIBLE);
-                findViewById(R.id.radioButton13).setVisibility(android.view.View.VISIBLE);
-                findViewById(R.id.radioButton14).setVisibility(android.view.View.VISIBLE);
-                findViewById(R.id.radioButton15).setVisibility(android.view.View.VISIBLE);
-                findViewById(R.id.imageView4).setVisibility(android.view.View.VISIBLE);
-                findViewById(R.id.button).setVisibility(android.view.View.VISIBLE);
-                ImageView img= (ImageView) findViewById(R.id.imageView4);
+                findViewById(R.id.radioButton).setVisibility(android.view.View.VISIBLE);
+                findViewById(R.id.radioButton5).setVisibility(android.view.View.VISIBLE);
+                findViewById(R.id.radioButton6).setVisibility(android.view.View.VISIBLE);
+                findViewById(R.id.radioButton7).setVisibility(android.view.View.VISIBLE);
+                findViewById(R.id.profile_image).setVisibility(android.view.View.VISIBLE);
+                findViewById(R.id.button4).setVisibility(android.view.View.VISIBLE);
+                findViewById(R.id.textView12).setVisibility(android.view.View.VISIBLE);
+                ImageView img= (ImageView) findViewById(R.id.profile_image);
                 img.setImageResource(product.getImage());
+                setButtons();
             }
 
             public void pickup(Product product){
@@ -157,25 +164,37 @@ public class MainActivity extends AppCompatActivity {
 
     public void populateProducts(){
         products.put(new NearableID("1b089cf2ccbf058b"), new Product("Running Shoes",
-                "These running shoes are like, the best", "retail",R.drawable.shoe,"$49.99"));
+                "Experience smooth support on your next run.", "retail",R.drawable.shoe,"€99",true));
         products.put(new NearableID("22aaab0c27180003"), new Product("Bike",
-                "Lovely Bike, much fast", "bike",R.drawable.bike,"$99.99"));
+                "Lovely Bike, much fast", "bike",R.drawable.bike,"€150",false));
         products.put(new NearableID("ee2b8cc919b453ab"), new Product("bag",
-                "These running shoes are like, the best", "retail",R.drawable.shoe,"$49.99"));
-        products.put(new NearableID("1e35554b0afec7ab"), new Product("generic",
-                "Lovely Bike, much fast", "bike",R.drawable.bike,"$99.99"));
-        products.put(new NearableID("c21fdc491a5c90f2"), new Product("car",
-                "These running shoes are like, the best", "retail",R.drawable.shoe,"$49.99"));
-        products.put(new NearableID("75926687589ebe92"), new Product("bed",
-                "Lovely Bike, much fast", "bike",R.drawable.bike,"$99.99"));
-        products.put(new NearableID("40ee97302ec5b238"), new Product("chair",
-                "These running shoes are like, the best", "retail",R.drawable.shoe,"$49.99"));
-        products.put(new NearableID("2d088f71be8bc22f"), new Product("door",
-                "Lovely Bike, much fast", "bike",R.drawable.bike,"$99.99"));
-        products.put(new NearableID("246199bedb49304a"), new Product("dog",
-                "These running shoes are like, the best", "retail",R.drawable.shoe,"$49.99"));
-        products.put(new NearableID("014b750b3ed89ecc"), new Product("fridge",
-                "Lovely Bike, much fast", "bike",R.drawable.bike,"$99.99"));
+                "These running shoes are like, the best", "retail",R.drawable.shoe,"$49.99",false));
+    }
+
+    public void setButtons(){
+        Button button= (Button) findViewById(R.id.button4);
+        button.setOnClickListener(new android.view.View.OnClickListener() {
+            @Override
+            public void onClick(android.view.View view) {
+                redeemCoupon();
+            }
+        });
+        Button tokenbutton= (Button) findViewById(R.id.button);
+        tokenbutton.setOnClickListener(new android.view.View.OnClickListener() {
+            @Override
+            public void onClick(android.view.View view) {
+                token();
+            }
+        });
+
+        Button buttonDetails = (Button) findViewById(R.id.button2);
+        buttonDetails.setOnClickListener(new android.view.View.OnClickListener(){
+            @Override
+            public void onClick(android.view.View view){
+                Log.d("test","click");
+                button2Clicked();
+            }
+        });
     }
 
     public void token(){
@@ -188,7 +207,13 @@ public class MainActivity extends AppCompatActivity {
         startActivity(i);
     }
 
+    public void destroyMirror(){
+        ctxMgr.destroy();
+        this.ctxMgr = MirrorContextManager.createMirrorContextManager(this);
+    }
+
     public void redeemCoupon(){
+        destroyMirror();
         String name= ((TextView) findViewById(R.id.titleLabel)).getText().toString();
         String price= ((TextView) findViewById(R.id.priceLabel)).getText().toString();
         String message= "Product: "+name+" ,at price of " +price;
@@ -198,6 +223,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void mirror(String template){
+        destroyMirror();
+        this.ctxMgr = MirrorContextManager.createMirrorContextManager(this);
         MirrorManager mirrorManager=new MirrorManager(template,ctxMgr);
         mirrorManager.castToMirror();
     }
@@ -205,7 +232,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
+       // initiateListeners();
         if (!SystemRequirementsChecker.checkWithDefaultDialogs(this)) {
             Log.e(TAG, "Can't scan for beacons, some pre-conditions were not met");
             Log.e(TAG, "Read more about what's required at: http://estimote.github.io/Android-SDK/JavaDocs/com/estimote/sdk/SystemRequirementsChecker.html");
@@ -215,6 +242,7 @@ public class MainActivity extends AppCompatActivity {
             showroomManager.startUpdates();
         }
     }
+
 
     @Override
     protected void onPause() {
@@ -227,6 +255,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         showroomManager.destroy();
+        ctxMgr.destroy();
     }
 
 }

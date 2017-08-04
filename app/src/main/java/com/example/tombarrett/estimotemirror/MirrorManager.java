@@ -34,7 +34,7 @@ public class MirrorManager {
 
         Dictionary dictionary = new Dictionary();
         dictionary.setTemplate(template);
-        dictionary.put("zone","far");
+        dictionary.put("zone","mid");
         Log.d("Mirror","plz");
 
         this.ctxMgr.display(dictionary, Zone.FAR, new DisplayCallback() {

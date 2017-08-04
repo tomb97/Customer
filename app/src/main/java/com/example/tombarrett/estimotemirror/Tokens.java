@@ -28,8 +28,8 @@ public class Tokens extends AppCompatActivity {
     };
 
     String[] listviewShortDescription = new String[]{
-            "Token for nike shoes: 10 points!", "Token for Chanel perfume: 25 points", "Token for Trek Bike: 35 points", "Token for a can of coke: 2 points",
-            "Token for any Tall Coffee: 5 points", "Token for our new range of RayBans: 50 points", "Token for Canon lense: 30 points", "Token for the Galaxy S8: 70 points",
+            "Token for nike shoes: 10 points!\nExpiry Date: 30-August-2017", "Token for Chanel perfume: 25 points\nExpiry Date: 30-August-2017", "Token for Trek Bike: 35 points\nExpiry Date: 30-August-2017", "Token for a can of coke: 2 points\nExpiry Date: 30-August-2017",
+            "Token for any Tall Coffee: 5 points\nExpiry Date: 30-August-2017", "Token for our new range of RayBans: 50 points\nExpiry Date: 30-August-2017", "Token for Canon lense: 30 points\nExpiry Date: 30-August-2017", "Token for the Galaxy S8: 70 points\nExpiry Date: 30-August-2017",
     };
 
 

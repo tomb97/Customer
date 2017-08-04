@@ -12,8 +12,10 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,11 +25,20 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Details extends AppCompatActivity {
 
     private UserDetails details;
     private Cursor resultSet;
+    private Spinner sItems;
+    private Spinner sItems2;
+    private Spinner sItems3;
+    private ArrayAdapter<String> adapter;
+    private ArrayAdapter<String> adapter2;
+    private ArrayAdapter<String> adapter3;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,20 +49,21 @@ public class Details extends AppCompatActivity {
         Cursor resultSet= db.rawQuery("SELECT * FROM UserDetails WHERE ID='1';",null);
 
         if(resultSet!=null && resultSet.moveToFirst()){
+            populateSpinners();
             ((EditText) findViewById(R.id.editText)).setText((resultSet.getString(1)), TextView.BufferType.EDITABLE);
             ((EditText) findViewById(R.id.editText2)).setText(resultSet.getString(2), TextView.BufferType.EDITABLE);
             ((EditText) findViewById(R.id.editText3)).setText(resultSet.getString(3), TextView.BufferType.EDITABLE);
-            ((EditText) findViewById(R.id.editText4)).setText(resultSet.getString(4), TextView.BufferType.EDITABLE);
-            ((EditText) findViewById(R.id.editText7)).setText(resultSet.getString(5), TextView.BufferType.EDITABLE);
-            ((EditText) findViewById(R.id.editText8)).setText(resultSet.getString(6), TextView.BufferType.EDITABLE);
+            sItems.setSelection(adapter.getPosition(resultSet.getString(4)));
+            sItems2.setSelection(adapter2.getPosition(resultSet.getString(5)));
+            sItems3.setSelection(adapter3.getPosition(resultSet.getString(6)));
             db.close();
             details=new UserDetails();
             details.setName(((EditText) findViewById(R.id.editText)).getText().toString());
             details.setEmail(((EditText) findViewById(R.id.editText2)).getText().toString());
             details.setAddress(((EditText) findViewById(R.id.editText3)).getText().toString());
-            details.setPantsSize(((EditText) findViewById(R.id.editText4)).getText().toString());
-            details.setShoeSize(((EditText) findViewById(R.id.editText7)).getText().toString());
-            details.setTopSize(((EditText) findViewById(R.id.editText8)).getText().toString());
+            details.setPantsSize(sItems.getSelectedItem().toString());
+            details.setShoeSize(sItems2.getSelectedItem().toString());
+            details.setTopSize(sItems3.getSelectedItem().toString());
         }
         else{
             Log.d("DB","Empty");
@@ -72,9 +84,9 @@ public class Details extends AppCompatActivity {
         details.setName(((EditText) findViewById(R.id.editText)).getText().toString());
         details.setEmail(((EditText) findViewById(R.id.editText2)).getText().toString());
         details.setAddress(((EditText) findViewById(R.id.editText3)).getText().toString());
-        details.setPantsSize(((EditText) findViewById(R.id.editText4)).getText().toString());
-        details.setShoeSize(((EditText) findViewById(R.id.editText7)).getText().toString());
-        details.setTopSize(((EditText) findViewById(R.id.editText8)).getText().toString());
+        details.setPantsSize(sItems.getSelectedItem().toString());
+        details.setShoeSize(sItems2.getSelectedItem().toString());
+        details.setTopSize(sItems3.getSelectedItem().toString());
 
         SQLiteDatabase db=openOrCreateDatabase("MyDB", MODE_PRIVATE, null);
         db.execSQL("CREATE TABLE IF NOT EXISTS UserDetails(ID VARCHAR PRIMARY KEY,NAME VARCHAR,DAY VARCHAR," +
@@ -83,5 +95,46 @@ public class Details extends AppCompatActivity {
                 +details.getPantsSize()+"',SHOE='"+details.getShoeSize()+"',TOP='"+details.getTopSize()+"' WHERE ID='1';");
         db.close();
 
+    }
+
+    public void populateSpinners(){
+        List<String> spinnerArray =  new ArrayList<String>();
+        spinnerArray.add("30");
+        spinnerArray.add("31");
+        spinnerArray.add("32");
+        spinnerArray.add("33");
+
+        adapter = new ArrayAdapter<String>(
+                this, android.R.layout.simple_spinner_item, spinnerArray);
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sItems = (Spinner) findViewById(R.id.spinner);
+        sItems.setAdapter(adapter);
+
+        List<String> spinnerArray2 =  new ArrayList<String>();
+        spinnerArray2.add("6");
+        spinnerArray2.add("7");
+        spinnerArray2.add("8");
+        spinnerArray2.add("9");
+
+        adapter2 = new ArrayAdapter<String>(
+                this, android.R.layout.simple_spinner_item, spinnerArray2);
+
+        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sItems2 = (Spinner) findViewById(R.id.spinner2);
+        sItems2.setAdapter(adapter2);
+
+        List<String> spinnerArray3 =  new ArrayList<String>();
+        spinnerArray3.add("XS");
+        spinnerArray3.add("S");
+        spinnerArray3.add("M");
+        spinnerArray3.add("L");
+
+        adapter3 = new ArrayAdapter<String>(
+                this, android.R.layout.simple_spinner_item, spinnerArray3);
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sItems3 = (Spinner) findViewById(R.id.spinner3);
+        sItems3.setAdapter(adapter3);
     }
 }

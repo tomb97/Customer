@@ -21,13 +21,15 @@ public class Product {
     private String emailMessageSA;
     private String emailMessageCustomer;
     private String price;
+    private boolean wearable;
 
-    public Product(String name, String summary, String template, int image, String price) {
+    public Product(String name, String summary, String template, int image, String price, boolean wearable) {
         this.name = name;
         this.summary = summary;
         this.template=template;
         this.image=image;
         this.price=price;
+        this.wearable=wearable;
     }
 
     public String getName() {
@@ -42,10 +44,17 @@ public class Product {
 
     public int getImage(){ return image; }
 
+    public boolean getWearable(){
+        return wearable;
+    }
+
     public String getPrice() { return price; }
 
     public String getEmailMessageSA(String name, String size){
-        emailMessageSA= ("Customer " + name + " is interested in " + getName() + " in size " + size+". This product is in stock!");
+        emailMessageSA= ("Customer " + name + " is interested in " + getName());
+        if(wearable)
+            emailMessageSA+=" in size " + size;
+        emailMessageSA+=". This product is in stock!";
         return emailMessageSA;
     }
 
