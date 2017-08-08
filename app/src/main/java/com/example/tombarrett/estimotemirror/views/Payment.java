@@ -1,4 +1,4 @@
-package com.example.tombarrett.estimotemirror;
+package com.example.tombarrett.estimotemirror.views;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.tombarrett.estimotemirror.R;
 import com.example.tombarrett.estimotemirror.awsSNS.AWSSNSManager;
 import com.example.tombarrett.estimotemirror.database.DatabaseHelper;
 

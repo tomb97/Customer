@@ -1,4 +1,4 @@
-package com.example.tombarrett.estimotemirror;
+package com.example.tombarrett.estimotemirror.views;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -15,6 +15,8 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import com.estimote.sdk.mirror.context.MirrorContextManager;
+import com.example.tombarrett.estimotemirror.mirror.MirrorManager;
+import com.example.tombarrett.estimotemirror.R;
 import com.example.tombarrett.estimotemirror.awsSNS.AWSSNSManager;
 import com.example.tombarrett.estimotemirror.database.DatabaseHelper;
 import com.example.tombarrett.estimotemirror.estimote.NearableID;

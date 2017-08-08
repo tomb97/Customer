@@ -1,4 +1,4 @@
-package com.example.tombarrett.estimotemirror;
+package com.example.tombarrett.estimotemirror.userDetails;
 
 import android.widget.EditText;
 
@@ -15,7 +15,7 @@ public class UserDetails {
     private String shoeSize;
     private String topSize;
 
-    UserDetails(String name, String email, String address, String pantsSize, String shoeSize, String topSize){
+    public UserDetails(String name, String email, String address, String pantsSize, String shoeSize, String topSize){
         this.name=name;
         this.email=email;
         this.address=address;
@@ -24,7 +24,7 @@ public class UserDetails {
         this.topSize=topSize;
     }
 
-    UserDetails(){
+    public UserDetails(){
 
     }
 

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:background="@drawable/background4"
     android:layout_height="match_parent"
-    tools:context="com.example.tombarrett.estimotemirror.Payment">
+    tools:context="com.example.tombarrett.estimotemirror.views.Payment">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

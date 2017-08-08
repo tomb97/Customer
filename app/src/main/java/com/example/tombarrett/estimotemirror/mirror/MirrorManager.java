@@ -1,4 +1,4 @@
-package com.example.tombarrett.estimotemirror;
+package com.example.tombarrett.estimotemirror.mirror;
 
 import android.util.Log;
 
@@ -20,7 +20,7 @@ public class MirrorManager {
     private String template;
     private MirrorContextManager ctxMgr;
 
-    MirrorManager(String template, MirrorContextManager ctxMgr){
+    public MirrorManager(String template, MirrorContextManager ctxMgr){
         this.template=template;
         this.ctxMgr=ctxMgr;
     }
