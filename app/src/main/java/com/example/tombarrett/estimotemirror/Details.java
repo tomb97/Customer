@@ -19,6 +19,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.tombarrett.estimotemirror.database.DatabaseHelper;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -38,25 +40,26 @@ public class Details extends AppCompatActivity {
     private ArrayAdapter<String> adapter;
     private ArrayAdapter<String> adapter2;
     private ArrayAdapter<String> adapter3;
+    private DatabaseHelper dbhelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
-        SQLiteDatabase db=openOrCreateDatabase("MyDB", MODE_PRIVATE, null);
-        db.execSQL("CREATE TABLE IF NOT EXISTS UserDetails(ID VARCHAR PRIMARY KEY,NAME VARCHAR," +
-                " EMAIL VARCHAR, ADDRESS VARCHAR, PANT VARCHAR, SHOE VARCHAR, TOP VARCHAR);");
-        Cursor resultSet= db.rawQuery("SELECT * FROM UserDetails WHERE ID='1';",null);
+        dbhelper= new DatabaseHelper(this);
+        dbhelper.connectToDB();
+        Cursor resultSet=dbhelper.getDetails();
+
+        populateSpinners();
 
         if(resultSet!=null && resultSet.moveToFirst()){
-            populateSpinners();
             ((EditText) findViewById(R.id.editText)).setText((resultSet.getString(1)), TextView.BufferType.EDITABLE);
             ((EditText) findViewById(R.id.editText2)).setText(resultSet.getString(2), TextView.BufferType.EDITABLE);
             ((EditText) findViewById(R.id.editText3)).setText(resultSet.getString(3), TextView.BufferType.EDITABLE);
             sItems.setSelection(adapter.getPosition(resultSet.getString(4)));
             sItems2.setSelection(adapter2.getPosition(resultSet.getString(5)));
             sItems3.setSelection(adapter3.getPosition(resultSet.getString(6)));
-            db.close();
+            dbhelper.disconnectToDB();
             details=new UserDetails();
             details.setName(((EditText) findViewById(R.id.editText)).getText().toString());
             details.setEmail(((EditText) findViewById(R.id.editText2)).getText().toString());
@@ -67,8 +70,8 @@ public class Details extends AppCompatActivity {
         }
         else{
             Log.d("DB","Empty");
-            db.execSQL("INSERT INTO UserDetails VALUES('1',' ',' ',' ',' ',' ',' ');");
-            db.close();
+            dbhelper.insertToDB();
+            dbhelper.disconnectToDB();
         }
         Button buttonSave= (Button) findViewById(R.id.button3);
         buttonSave.setOnClickListener(new android.view.View.OnClickListener() {
@@ -87,13 +90,9 @@ public class Details extends AppCompatActivity {
         details.setPantsSize(sItems.getSelectedItem().toString());
         details.setShoeSize(sItems2.getSelectedItem().toString());
         details.setTopSize(sItems3.getSelectedItem().toString());
-
-        SQLiteDatabase db=openOrCreateDatabase("MyDB", MODE_PRIVATE, null);
-        db.execSQL("CREATE TABLE IF NOT EXISTS UserDetails(ID VARCHAR PRIMARY KEY,NAME VARCHAR,DAY VARCHAR," +
-                " EMAIL VARCHAR, ADDRESS VARCHAR, PANT VARCHAR, SHOE VARCHAR, TOP VARCHAR);");
-        db.execSQL("UPDATE UserDetails SET NAME='"+details.getName()+"',EMAIL='"+details.getEmail()+"',ADDRESS='"+details.getAddress()+"',PANT='"
-                +details.getPantsSize()+"',SHOE='"+details.getShoeSize()+"',TOP='"+details.getTopSize()+"' WHERE ID='1';");
-        db.close();
+        dbhelper.connectToDB();
+        dbhelper.updateDetails(details);
+        dbhelper.disconnectToDB();
 
     }
 
@@ -115,7 +114,6 @@ public class Details extends AppCompatActivity {
         spinnerArray2.add("6");
         spinnerArray2.add("7");
         spinnerArray2.add("8");
-        spinnerArray2.add("9");
 
         adapter2 = new ArrayAdapter<String>(
                 this, android.R.layout.simple_spinner_item, spinnerArray2);

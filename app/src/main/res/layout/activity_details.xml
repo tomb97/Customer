@@ -75,7 +75,7 @@
             android:layout_marginTop="22dp"
             android:text="USER DETAILS"
             android:textColor="#58857e"
-            android:textSize="30dp" />
+            android:textSize="20dp" />
 
         <TextView
             android:id="@+id/textView4"
@@ -87,7 +87,7 @@
             android:layout_toStartOf="@+id/editText3"
             android:text="SIZES"
             android:textColor="#58857e"
-            android:textSize="30dp" />
+            android:textSize="20dp" />
 
         <Spinner
             android:id="@+id/spinner"
@@ -114,7 +114,7 @@
             android:textColor="#58857e"
             android:layout_below="@+id/spinner2"
             android:layout_alignStart="@+id/spinner2"
-            android:layout_marginTop="20dp" />
+            android:layout_marginTop="18dp" />
 
         <TextView
             android:id="@+id/textView5"
@@ -125,7 +125,7 @@
             android:layout_marginStart="23dp"
             android:text="NAME"
             android:textColor="#58857e"
-            android:textSize="20dp" />
+            android:textSize="17dp" />
 
         <TextView
             android:id="@+id/textView6"
@@ -135,7 +135,7 @@
             android:layout_alignStart="@+id/textView5"
             android:text="E-MAIL"
             android:textColor="#58857e"
-            android:textSize="20dp" />
+            android:textSize="17dp" />
 
         <TextView
             android:id="@+id/textView7"
@@ -145,7 +145,7 @@
             android:layout_alignStart="@+id/textView6"
             android:text="ADDRESS"
             android:textColor="#58857e"
-            android:textSize="20dp" />
+            android:textSize="17dp" />
 
         <TextView
             android:id="@+id/textView8"
@@ -155,7 +155,7 @@
             android:layout_alignStart="@+id/textView4"
             android:text="PANTS"
             android:textColor="#58857e"
-            android:textSize="20dp" />
+            android:textSize="17dp" />
 
         <TextView
             android:id="@+id/textView9"
@@ -165,7 +165,7 @@
             android:layout_alignStart="@+id/textView8"
             android:text="SHOE"
             android:textColor="#58857e"
-            android:textSize="20dp" />
+            android:textSize="17dp" />
 
         <TextView
             android:id="@+id/textView10"
@@ -175,7 +175,7 @@
             android:layout_alignStart="@+id/textView9"
             android:text="TOP"
             android:textColor="#58857e"
-            android:textSize="20dp" />
+            android:textSize="17dp" />
 
 
     </RelativeLayout>
