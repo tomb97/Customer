@@ -24,7 +24,7 @@ public class AWSSNSManager {
             @Override
             public void run() {
                 try {
-                    AmazonSNSClient snsClient = new AmazonSNSClient(new BasicAWSCredentials("", ""));
+                    AmazonSNSClient snsClient = new AmazonSNSClient(new BasicAWSCredentials("", "+/"));
                     snsClient.setRegion(Region.getRegion(Regions.EU_WEST_1));
                     Log.d("sns", "client");
                     PublishRequest publishRequest = new PublishRequest();
@@ -60,7 +60,7 @@ public class AWSSNSManager {
     }
 
     public void publishMessageForNearExpiredToken(String message, String subject){
-        String TargetARN="arn:aws:sns:eu-west-1:151762801558:Estimote";
+        String TargetARN="arn:aws:sns:eu-west-1:151762801558:Receipt";
         Runnable myRunnable = publish(message,subject,TargetARN);
         Thread thread = new Thread(myRunnable);
         thread.start();

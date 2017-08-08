@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -25,7 +26,8 @@ import java.util.List;
 
 public class Tokens extends AppCompatActivity {
 
-   private List<Token> tokens;
+    private List<Token> tokens;
+    private Token tempToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,12 +82,14 @@ public class Tokens extends AppCompatActivity {
         androidListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                toastMessage((tokens.get(i).getDescription()+"\nExpiry Date: "+tokens.get(i).getDate()),tokens.get(i).getExpDate());
+                toastMessage((tokens.get(i).getDescription()+"\nExpiry Date: "+tokens.get(i).getDate()),tokens.get(i));
             }
         });
     }
 
-    public void toastMessage(String message, Date date){
+    public void toastMessage(String message, Token t){
+        this.tempToken=t;
+        Date date=tempToken.getExpDate();
         Toast toast = Toast.makeText(this, message, Toast.LENGTH_LONG);
         if(nearExpired(date))
           toast.getView().setBackgroundColor(Color.RED);
@@ -110,8 +114,9 @@ public class Tokens extends AppCompatActivity {
     }
 
     public void tokenNearEXPSNS(){
-//        AWSSNSManager awssnsManager = new AWSSNSManager();
-//        awssnsManager.publishMessageToCustomer(("Token: "+),"Token near expiry date!");
+        Log.d("sns","go");
+        AWSSNSManager awssnsManager = new AWSSNSManager();
+        awssnsManager.publishMessageForNearExpiredToken(("Token: "+tempToken.getName()+" is near expiry!\nExpiry Date: "+tempToken.getDate()),"Token near expiry date!");
     }
 
 
