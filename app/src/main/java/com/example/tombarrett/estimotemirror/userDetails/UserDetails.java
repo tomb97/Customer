@@ -4,6 +4,7 @@ import android.widget.EditText;
 
 /**
  * Created by tombarrett on 31/07/2017.
+ * Class used for recording usr details to be used by the DatabaseHelper class.
  */
 
 public class UserDetails {

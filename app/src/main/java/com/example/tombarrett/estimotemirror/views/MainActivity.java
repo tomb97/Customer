@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
             }
             @Override
             public void onProductPutdown(Product product) {
-               // tempProduct=product;
+                // tempProduct=product;
             }
         });
     }
@@ -190,7 +190,9 @@ public class MainActivity extends AppCompatActivity {
         RadioButton radioButton4 = (RadioButton) findViewById(R.id.radioButton);
         RadioButton radioButton5 = (RadioButton) findViewById(R.id.radioButton5);
         RadioButton radioButton6 = (RadioButton) findViewById(R.id.radioButton11);
-        if((radioButton.isChecked() || radioButton2.isChecked() || radioButton3.isChecked()) && (radioButton4.isChecked() || radioButton5.isChecked() || radioButton6.isChecked()))
+        if((radioButton.isChecked() || radioButton2.isChecked() || radioButton3.isChecked()) && (radioButton4.isChecked() || radioButton5.isChecked() || radioButton6.isChecked()) && product.getWearable())
+            selected=true;
+        else if(radioButton4.isChecked() || radioButton5.isChecked() || radioButton6.isChecked())
             selected=true;
         else
             selected=false;

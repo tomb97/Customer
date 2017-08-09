@@ -10,6 +10,8 @@ import static android.database.sqlite.SQLiteDatabase.openOrCreateDatabase;
 
 /**
  * Created by tombarrett on 28/07/2017.
+ * Product information is stored here.
+ * These products are used in the shop.
  */
 
 public class Product {

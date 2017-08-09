@@ -13,6 +13,12 @@ import org.json.JSONObject;
 
 /**
  * Created by tombarrett on 02/08/2017.
+ * This class handles display requests to the estimote mirror.
+ * A Dictionary is used to store the template to be used and any varibales to be inputted
+ * such as distance indicator.
+ * The MirrorContextManager measures your current distance from the mirror
+ * in real time and the display can update accordingly until you clearDisplayRequests.
+ * This class does not specify a specific mirror but you can select them by mirror ID.
  */
 
 public class MirrorManager {
@@ -35,7 +41,6 @@ public class MirrorManager {
         Dictionary dictionary = new Dictionary();
         dictionary.setTemplate(template);
         dictionary.put("zone","mid");
-        Log.d("Mirror","plz");
 
         this.ctxMgr.display(dictionary, Zone.FAR, new DisplayCallback() {
 

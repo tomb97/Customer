@@ -6,6 +6,7 @@ import java.util.Date;
 
 /**
  * Created by tombarrett on 08/08/2017.
+ * Token class contains information about the tokens used in the token display activity.
  */
 
 public class Token {

@@ -2,6 +2,7 @@ package com.example.tombarrett.estimotemirror.estimote;
 
 /**
  * Created by tombarrett on 28/07/2017.
+ * Class to store information about a nearable/sticker
  */
 
 public class NearableID {

@@ -14,6 +14,16 @@ import com.amazonaws.services.sns.model.PublishRequest;
 
 /**
  * Created by tombarrett on 01/08/2017.
+ * Class used to send messages via AWS SNS.
+ * Set up on AWS as follows:
+ * 1. Log into the AWS console
+ * 2. Select the SNS service
+ * 3. Create a topic
+ * 4. Subscribe to that top.
+ * Email is easiest and free of charge.
+ * The 3 methods below are seperated to allow for different future ARN's
+ * and also any custom config needed for the different message types.
+ * The AWS connection is running on a separate thread.
  */
 
 public class AWSSNSManager {
@@ -24,7 +34,7 @@ public class AWSSNSManager {
             @Override
             public void run() {
                 try {
-                    AmazonSNSClient snsClient = new AmazonSNSClient(new BasicAWSCredentials("", "+/"));
+                    AmazonSNSClient snsClient = new AmazonSNSClient(new BasicAWSCredentials("", ""));
                     snsClient.setRegion(Region.getRegion(Regions.EU_WEST_1));
                     Log.d("sns", "client");
                     PublishRequest publishRequest = new PublishRequest();

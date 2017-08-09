@@ -11,6 +11,9 @@ import static android.database.sqlite.SQLiteDatabase.openOrCreateDatabase;
 
 /**
  * Created by tombarrett on 08/08/2017.
+ * Very basic database helper class due to time constraints
+ * Methods names shouldn't have to be changed if a more robust implementation is added
+ * and therefore little changes outside this class would be needed.
  */
 
 public class DatabaseHelper {
