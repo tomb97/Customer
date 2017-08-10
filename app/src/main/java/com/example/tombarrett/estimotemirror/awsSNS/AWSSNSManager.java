@@ -15,12 +15,20 @@ import com.amazonaws.services.sns.model.PublishRequest;
 /**
  * Created by tombarrett on 01/08/2017.
  * Class used to send messages via AWS SNS.
+ *
  * Set up on AWS as follows:
  * 1. Log into the AWS console
  * 2. Select the SNS service
  * 3. Create a topic
  * 4. Subscribe to that top.
+ * 
  * Email is easiest and free of charge.
+ * Set up BasicAWSCredientails as snsClient creation below:
+ * 1. Log in to the AWS console.
+ * 2. Click on Account name and select 'My Security Credentials'
+ * 3. Select Access Keys
+ * 4. Click 'Create New Access Key'
+ * 5. CSV file will be downloaded and paste contents into line below....shorter one is first!
  * The 3 methods below are seperated to allow for different future ARN's
  * and also any custom config needed for the different message types.
  * The AWS connection is running on a separate thread.
