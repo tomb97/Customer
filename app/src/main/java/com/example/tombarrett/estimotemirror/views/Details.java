@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.example.tombarrett.estimotemirror.R;
 import com.example.tombarrett.estimotemirror.database.DatabaseHelper;
+import com.example.tombarrett.estimotemirror.presenter.UserDetailsPresenter;
 import com.example.tombarrett.estimotemirror.userDetails.UserDetails;
 
 import java.util.ArrayList;
@@ -27,15 +28,16 @@ public class Details extends AppCompatActivity {
     private ArrayAdapter<String> adapter;
     private ArrayAdapter<String> adapter2;
     private ArrayAdapter<String> adapter3;
-    private DatabaseHelper dbhelper;
+    private UserDetailsPresenter userDetailsPresenter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
-        dbhelper= new DatabaseHelper(this);
-        dbhelper.connectToDB();
-        Cursor resultSet=dbhelper.getDetails();
+        userDetailsPresenter=new UserDetailsPresenter(this);
+        userDetailsPresenter.connectToDB();
+        Cursor resultSet=userDetailsPresenter.getDetails();
 
         populateSpinners();
 
@@ -46,7 +48,7 @@ public class Details extends AppCompatActivity {
             sItems.setSelection(adapter.getPosition(resultSet.getString(4)));
             sItems2.setSelection(adapter2.getPosition(resultSet.getString(5)));
             sItems3.setSelection(adapter3.getPosition(resultSet.getString(6)));
-            dbhelper.disconnectToDB();
+            userDetailsPresenter.disconnectToDB();
             details=new UserDetails();
             details.setName(((EditText) findViewById(R.id.editText)).getText().toString());
             details.setEmail(((EditText) findViewById(R.id.editText2)).getText().toString());
@@ -57,8 +59,8 @@ public class Details extends AppCompatActivity {
         }
         else{
             Log.d("DB","Empty");
-            dbhelper.insertToDB();
-            dbhelper.disconnectToDB();
+            userDetailsPresenter.insertToDB();
+            userDetailsPresenter.disconnectToDB();
         }
         Button buttonSave= (Button) findViewById(R.id.button3);
         buttonSave.setOnClickListener(new android.view.View.OnClickListener() {
@@ -77,10 +79,9 @@ public class Details extends AppCompatActivity {
         details.setPantsSize(sItems.getSelectedItem().toString());
         details.setShoeSize(sItems2.getSelectedItem().toString());
         details.setTopSize(sItems3.getSelectedItem().toString());
-        dbhelper.connectToDB();
-        dbhelper.updateDetails(details);
-        dbhelper.disconnectToDB();
-
+        userDetailsPresenter.connectToDB();
+        userDetailsPresenter.updateDetails(details);
+        userDetailsPresenter.disconnectToDB();
     }
 
     public void populateSpinners(){
