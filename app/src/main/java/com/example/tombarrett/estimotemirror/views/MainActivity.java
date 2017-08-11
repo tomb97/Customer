@@ -49,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
     private Product product;
     private String colour;
     private String size;
-    private DatabaseHelper dbhelper;
     private MainActivityPresenter mainActivityPresenter;
 
     @Override
@@ -62,7 +61,6 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
         mainActivityPresenter=new MainActivityPresenter(this);
         initiateListeners();
-        dbhelper=new DatabaseHelper(this);
     }
 
     public void initiateListeners(){
@@ -84,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onProductPickup(final Product product) {
                 if(product!=tempProduct) {
+                    Log.d("test","pickup");
                     alertDialog(product);
                 }
             }
@@ -100,8 +99,8 @@ public class MainActivity extends AppCompatActivity {
             radioButton2 = (RadioButton) findViewById(R.id.radioButton7);
             radioButton3 = (RadioButton) findViewById(R.id.radioButton10);
 
-            dbhelper.connectToDB();
-            Cursor resultSet= dbhelper.getShoe();
+            mainActivityPresenter.connectToDB();
+            Cursor resultSet= mainActivityPresenter.getShoe();
             if (resultSet != null && resultSet.moveToFirst()) {
                 String size=resultSet.getString(0);
                 if (radioButton.getText().toString().equals(size))
@@ -111,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
                 else if (radioButton3.getText().toString().equals(size))
                     radioButton3.setChecked(true);
             }
-            dbhelper.disconnectToDB();
+            mainActivityPresenter.disconnectToDB();
 
             radioButton.setOnClickListener(new android.view.View.OnClickListener() {
                 @Override
@@ -230,10 +229,6 @@ public class MainActivity extends AppCompatActivity {
                 .template("retail")
                 .wearable(true)
                 .build());
-//        products.put(new NearableID("22aaab0c27180003"), new Product("Bike",
-//                "Lovely Bike, much fast", "bike",R.drawable.bike,"€150",false));
-//        products.put(new NearableID("1e35554b0afec7ab"), new Product("Running Shoes",
-//                "These running shoes are like, the best", "retail",R.drawable.shoe,"€99",true));
     }
 
     public void setButtons(){
@@ -336,16 +331,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void pickup(Product product){
         this.product=product;
-        dbhelper.connectToDB();
-        Cursor resultSet=dbhelper.getDetails();
-        if (resultSet != null && resultSet.moveToFirst()) {
-            AWSSNSManager awssnsManager = new AWSSNSManager();
-            awssnsManager.publishMessageToShopAssistant((product.getEmailMessageSA(resultSet.getString(1), resultSet.getString(5))), "Customer is interested in a product!");
-        }
-        else{
-            Log.d("SNS","crash");
-        }
-        dbhelper.disconnectToDB();
+        mainActivityPresenter.pickup(product);
         updateViews(product);
         mirror(product.getTemplate());
     }

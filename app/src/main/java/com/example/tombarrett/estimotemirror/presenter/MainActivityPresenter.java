@@ -1,9 +1,14 @@
 package com.example.tombarrett.estimotemirror.presenter;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.util.Log;
 
 import com.estimote.coresdk.common.config.EstimoteSDK;
+import com.example.tombarrett.estimotemirror.awsSNS.AWSSNSManager;
 import com.example.tombarrett.estimotemirror.database.DatabaseHelper;
+import com.example.tombarrett.estimotemirror.estimote.Product;
+import com.example.tombarrett.estimotemirror.userDetails.UserDetails;
 
 import static com.estimote.coresdk.common.config.EstimoteSDK.getApplicationContext;
 
@@ -15,6 +20,7 @@ public class MainActivityPresenter {
 
     private DatabaseHelper dbHelper;
     private Context context;
+    private Cursor resultSet;
 
     public MainActivityPresenter(Context context){
         this.context=context;
@@ -24,4 +30,38 @@ public class MainActivityPresenter {
     public void initialiseEstimote(){
         EstimoteSDK.initialize(context.getApplicationContext(), "toms-location-odr", "c76685df7fdccaec45b617c18cf50bdc");
     }
+
+    public void connectToDB(){
+        dbHelper.connectToDB();
+    }
+
+    public Cursor getShoe(){
+        return dbHelper.getShoe();
+    }
+
+    public Cursor getDetails(){
+        return dbHelper.getDetails();
+    }
+
+    public void disconnectToDB(){
+        dbHelper.disconnectToDB();
+    }
+
+    public void sendEmailtoSA(Product product, Cursor resultSet){
+        AWSSNSManager awssnsManager = new AWSSNSManager();
+        awssnsManager.publishMessageToShopAssistant((product.getEmailMessageSA(resultSet.getString(1), resultSet.getString(5))), "Customer is interested in a product!");
+    }
+
+    public void pickup(Product product){
+        connectToDB();
+        resultSet=getDetails();
+        if (resultSet != null && resultSet.moveToFirst()) {
+            sendEmailtoSA(product,resultSet);
+        }
+        else{
+            Log.d("SNS","crash");
+        }
+        disconnectToDB();
+    }
+
 }
