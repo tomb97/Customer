@@ -23,6 +23,8 @@ import com.example.tombarrett.estimotemirror.database.DatabaseHelper;
 import com.example.tombarrett.estimotemirror.estimote.NearableID;
 import com.example.tombarrett.estimotemirror.estimote.Product;
 import com.example.tombarrett.estimotemirror.estimote.ShowroomManager;
+import com.example.tombarrett.estimotemirror.presenter.MainActivityPresenter;
+
 import android.widget.Button;
 import android.content.Intent;
 import android.widget.Toast;
@@ -48,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     private String colour;
     private String size;
     private DatabaseHelper dbhelper;
+    private MainActivityPresenter mainActivityPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,12 +60,13 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(this, "Please turn on WiFi.",
                 Toast.LENGTH_LONG).show();
         startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+        mainActivityPresenter=new MainActivityPresenter(this);
         initiateListeners();
         dbhelper=new DatabaseHelper(this);
     }
 
     public void initiateListeners(){
-        EstimoteSDK.initialize(getApplicationContext(), "toms-location-odr", "c76685df7fdccaec45b617c18cf50bdc");
+        mainActivityPresenter.initialiseEstimote();
 
         Toast.makeText(this, "Please maintain user details by clicking on the User Details button.\nOnce this is done, pick up a product for more information.",
                 Toast.LENGTH_LONG).show();
