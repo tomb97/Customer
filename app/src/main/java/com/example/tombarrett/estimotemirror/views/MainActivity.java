@@ -311,7 +311,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 destroyMirror();
                 setContentView(activity_main);
-                pickup(product);
+                pickup(product, true);
                 tempProduct = product;
             }
         });
@@ -323,17 +323,18 @@ public class MainActivity extends AppCompatActivity {
                 setContentView(activity_main);
                 setButtons();
                 if (tempProduct != null)
-                    pickup(tempProduct);
+                    pickup(tempProduct, false);
             }
         });
         alert.create().show();
     }
 
-    public void pickup(Product product){
+    public void pickup(Product product, boolean mirror){
         this.product=product;
         mainActivityPresenter.pickup(product);
         updateViews(product);
-        mirror(product.getTemplate());
+        if(mirror)
+            mirror(product.getTemplate());
     }
 
     public void redeemCoupon(){

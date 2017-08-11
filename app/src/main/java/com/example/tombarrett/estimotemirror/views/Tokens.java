@@ -42,7 +42,6 @@ public class Tokens extends AppCompatActivity {
 
     public void setCustomListView(){
         List<HashMap<String, String>> aList = new ArrayList<HashMap<String, String>>();
-
         for (Token token : tokens) {
             HashMap<String, String> hm = new HashMap<String, String>();
             hm.put("listview_title", token.getName());

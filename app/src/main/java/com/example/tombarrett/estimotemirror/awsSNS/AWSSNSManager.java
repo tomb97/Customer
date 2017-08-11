@@ -36,26 +36,25 @@ import com.amazonaws.services.sns.model.PublishRequest;
 
 public class AWSSNSManager {
 
+    private AmazonSNSClient snsClient;
     private Runnable publish(final String message, final String subject, final String arn) {
-
         Runnable aRunnable = new Runnable() {
             @Override
             public void run() {
-                try {
-                    AmazonSNSClient snsClient = new AmazonSNSClient(new BasicAWSCredentials());
-                    snsClient.setRegion(Region.getRegion(Regions.EU_WEST_1));
-                    PublishRequest publishRequest = new PublishRequest();
-                    publishRequest.setMessage(message);
-                    publishRequest.setSubject(subject);
-                    publishRequest.withTargetArn(arn);
-                    snsClient.publish(publishRequest);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Log.d("sns","no");
-                }
+            try {
+                snsClient = new AmazonSNSClient(new BasicAWSCredentials());
+                snsClient.setRegion(Region.getRegion(Regions.EU_WEST_1));
+                PublishRequest publishRequest = new PublishRequest();
+                publishRequest.setMessage(message);
+                publishRequest.setSubject(subject);
+                publishRequest.withTargetArn(arn);
+                snsClient.publish(publishRequest);
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.d("sns","no");
+            }
             }
         };
-
         return aRunnable;
     }
 
