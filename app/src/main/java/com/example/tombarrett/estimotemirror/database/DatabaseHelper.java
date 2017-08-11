@@ -31,7 +31,7 @@ public class DatabaseHelper {
                     " EMAIL VARCHAR, ADDRESS VARCHAR, PANT VARCHAR, SHOE VARCHAR, TOP VARCHAR);");
         }
         catch (Exception ex){
-            Log.d("db", "crash");
+            ex.printStackTrace();
         }
     }
 
@@ -40,31 +40,27 @@ public class DatabaseHelper {
             db.close();
         }
         catch (Exception ex){
-            Log.d("db", "crash");
+            ex.printStackTrace();
         }
     }
 
     public void updateDetails(UserDetails details){
         try{
-            db.execSQL("CREATE TABLE IF NOT EXISTS UserDetails(ID VARCHAR PRIMARY KEY,NAME VARCHAR," +
-                    " EMAIL VARCHAR, ADDRESS VARCHAR, PANT VARCHAR, SHOE VARCHAR, TOP VARCHAR);");
             db.execSQL("UPDATE UserDetails SET NAME='"+details.getName()+"',EMAIL='"+details.getEmail()+"',ADDRESS='"+details.getAddress()+"',PANT='"
                     +details.getPantsSize()+"',SHOE='"+details.getShoeSize()+"',TOP='"+details.getTopSize()+"' WHERE ID='1';");
         }
         catch (Exception ex){
-            Log.d("db", "crash");
+            ex.printStackTrace();
         }
     }
 
     public Cursor getDetails(){
         Cursor resultSet = null;
         try{
-            db.execSQL("CREATE TABLE IF NOT EXISTS UserDetails(ID VARCHAR PRIMARY KEY,NAME VARCHAR," +
-                    " EMAIL VARCHAR, ADDRESS VARCHAR, PANT VARCHAR, SHOE VARCHAR, TOP VARCHAR);");
             resultSet= db.rawQuery("SELECT * FROM UserDetails WHERE ID='1';",null);
         }
         catch (Exception ex){
-            Log.d("db", "crash");
+            ex.printStackTrace();
         }
         return resultSet;
     }
@@ -72,24 +68,20 @@ public class DatabaseHelper {
     public Cursor getShoe(){
         Cursor resultSet = null;
         try{
-            db.execSQL("CREATE TABLE IF NOT EXISTS UserDetails(ID VARCHAR PRIMARY KEY,NAME VARCHAR," +
-                    " EMAIL VARCHAR, ADDRESS VARCHAR, PANT VARCHAR, SHOE VARCHAR, TOP VARCHAR);");
             resultSet = db.rawQuery("SELECT SHOE FROM UserDetails WHERE ID='1';", null);
         }
         catch (Exception ex){
-            Log.d("db", "crash");
+            ex.printStackTrace();
         }
         return resultSet;
     }
 
     public void insertToDB(){
         try{
-            db.execSQL("CREATE TABLE IF NOT EXISTS UserDetails(ID VARCHAR PRIMARY KEY,NAME VARCHAR," +
-                    " EMAIL VARCHAR, ADDRESS VARCHAR, PANT VARCHAR, SHOE VARCHAR, TOP VARCHAR);");
             db.execSQL("INSERT INTO UserDetails VALUES('1',' ',' ',' ','30','6','XS');");
         }
         catch (Exception ex){
-            Log.d("db", "crash");
+            ex.printStackTrace();
         }
     }
 }

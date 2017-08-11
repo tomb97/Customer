@@ -23,7 +23,7 @@ import com.amazonaws.services.sns.model.PublishRequest;
  * 4. Subscribe to that top.
  * 
  * Email is easiest and free of charge.
- * Set up BasicAWSCredientails as snsClient creation below:
+ * Set up BasicAWSCredentials as snsClient creation below:
  * 1. Log in to the AWS console.
  * 2. Click on Account name and select 'My Security Credentials'
  * 3. Select Access Keys
@@ -42,16 +42,13 @@ public class AWSSNSManager {
             @Override
             public void run() {
                 try {
-                    AmazonSNSClient snsClient = new AmazonSNSClient(new BasicAWSCredentials("", ""));
+                    AmazonSNSClient snsClient = new AmazonSNSClient(new BasicAWSCredentials("",""));
                     snsClient.setRegion(Region.getRegion(Regions.EU_WEST_1));
-                    Log.d("sns", "client");
                     PublishRequest publishRequest = new PublishRequest();
                     publishRequest.setMessage(message);
                     publishRequest.setSubject(subject);
                     publishRequest.withTargetArn(arn);
-                    Log.d("sns", "request");
                     snsClient.publish(publishRequest);
-                    Log.d("sns", "requested");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

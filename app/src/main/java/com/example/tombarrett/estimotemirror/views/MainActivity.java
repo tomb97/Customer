@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import com.estimote.sdk.mirror.context.MirrorContextManager;
+import com.example.tombarrett.estimotemirror.estimote.ProductBuilder;
 import com.example.tombarrett.estimotemirror.mirror.MirrorManager;
 import com.example.tombarrett.estimotemirror.R;
 import com.example.tombarrett.estimotemirror.awsSNS.AWSSNSManager;
@@ -213,10 +214,22 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void populateProducts(){
-        products.put(new NearableID("22aaab0c27180003"), new Product("Bike",
-                "Lovely Bike, much fast", "bike",R.drawable.bike,"€150",false));
-        products.put(new NearableID("1e35554b0afec7ab"), new Product("Running Shoes",
-                "These running shoes are like, the best", "retail",R.drawable.shoe,"€99",true));
+        products.put(new NearableID("22aaab0c27180003"), new ProductBuilder("Bike",
+                "Lovely Bike, much fast","€150")
+                .image(R.drawable.bike)
+                .template("bike")
+                .wearable(false)
+                .build());
+        products.put(new NearableID("1e35554b0afec7ab"), new ProductBuilder("Running Shoes",
+                "These running shoes are like, the best","€99")
+                .image(R.drawable.shoe2)
+                .template("retail")
+                .wearable(true)
+                .build());
+//        products.put(new NearableID("22aaab0c27180003"), new Product("Bike",
+//                "Lovely Bike, much fast", "bike",R.drawable.bike,"€150",false));
+//        products.put(new NearableID("1e35554b0afec7ab"), new Product("Running Shoes",
+//                "These running shoes are like, the best", "retail",R.drawable.shoe,"€99",true));
     }
 
     public void setButtons(){

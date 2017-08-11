@@ -21,17 +21,16 @@ public class Product {
     private String template;
     private int image;
     private String emailMessageSA;
-    private String emailMessageCustomer;
     private String price;
     private boolean wearable;
 
-    public Product(String name, String summary, String template, int image, String price, boolean wearable) {
-        this.name = name;
-        this.summary = summary;
-        this.template=template;
-        this.image=image;
-        this.price=price;
-        this.wearable=wearable;
+    public Product(ProductBuilder builder){
+        this.name = builder.name;
+        this.summary = builder.summary;
+        this.template=builder.template;
+        this.image=builder.image;
+        this.price=builder.price;
+        this.wearable=builder.wearable;
     }
 
     public String getName() {
@@ -58,10 +57,5 @@ public class Product {
             emailMessageSA+=" in size " + size;
         emailMessageSA+=". This product is in stock!";
         return emailMessageSA;
-    }
-
-    public String getEmailMessageCustomer(String name){
-        emailMessageCustomer= (name+", This is your digital receipt for product: "+getName()+"\nBilling Amount: "+getSummary());
-        return emailMessageCustomer;
     }
 }
