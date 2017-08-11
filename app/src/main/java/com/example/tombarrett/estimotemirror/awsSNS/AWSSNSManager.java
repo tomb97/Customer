@@ -42,7 +42,7 @@ public class AWSSNSManager {
             @Override
             public void run() {
                 try {
-                    AmazonSNSClient snsClient = new AmazonSNSClient(new BasicAWSCredentials("",""));
+                    AmazonSNSClient snsClient = new AmazonSNSClient(new BasicAWSCredentials());
                     snsClient.setRegion(Region.getRegion(Regions.EU_WEST_1));
                     PublishRequest publishRequest = new PublishRequest();
                     publishRequest.setMessage(message);
@@ -51,6 +51,7 @@ public class AWSSNSManager {
                     snsClient.publish(publishRequest);
                 } catch (Exception e) {
                     e.printStackTrace();
+                    Log.d("sns","no");
                 }
             }
         };
@@ -61,6 +62,7 @@ public class AWSSNSManager {
     public AWSSNSManager(){}
 
     public void publishMessageToShopAssistant(String message, String subject){
+        Log.d("sns",(message+subject));
         String TargetARN="arn:aws:sns:eu-west-1:151762801558:Estimote";
         Runnable myRunnable = publish(message,subject,TargetARN);
         Thread thread = new Thread(myRunnable);
@@ -68,6 +70,7 @@ public class AWSSNSManager {
     }
 
     public void publishMessageToCustomer(String message, String subject){
+        Log.d("sns",(message+subject));
         String TargetARN="arn:aws:sns:eu-west-1:151762801558:Receipt";
         Runnable myRunnable = publish(message,subject,TargetARN);
         Thread thread = new Thread(myRunnable);
@@ -75,6 +78,7 @@ public class AWSSNSManager {
     }
 
     public void publishMessageForNearExpiredToken(String message, String subject){
+        Log.d("sns",(message+subject));
         String TargetARN="arn:aws:sns:eu-west-1:151762801558:Receipt";
         Runnable myRunnable = publish(message,subject,TargetARN);
         Thread thread = new Thread(myRunnable);
