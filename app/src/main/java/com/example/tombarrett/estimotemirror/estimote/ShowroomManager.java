@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.estimote.coresdk.recognition.packets.Nearable;
 import com.estimote.coresdk.service.BeaconManager;
+import com.example.tombarrett.estimotemirror.shop.Product;
 
 import java.util.HashMap;
 import java.util.List;

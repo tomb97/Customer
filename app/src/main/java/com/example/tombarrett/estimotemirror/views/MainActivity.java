@@ -1,5 +1,4 @@
 package com.example.tombarrett.estimotemirror.views;
-
 import android.content.Context;
 import android.content.DialogInterface;
 import android.database.Cursor;
@@ -7,36 +6,24 @@ import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import com.estimote.coresdk.common.config.EstimoteSDK;
 import com.estimote.coresdk.common.requirements.SystemRequirementsChecker;
-
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
-import com.estimote.sdk.mirror.context.MirrorContextManager;
-import com.example.tombarrett.estimotemirror.estimote.ProductBuilder;
-import com.example.tombarrett.estimotemirror.mirror.IMirrorManager;
-import com.example.tombarrett.estimotemirror.mirror.MirrorManager;
 import com.example.tombarrett.estimotemirror.R;
-import com.example.tombarrett.estimotemirror.awsSNS.AWSSNSManager;
-import com.example.tombarrett.estimotemirror.database.DatabaseHelper;
 import com.example.tombarrett.estimotemirror.estimote.NearableID;
-import com.example.tombarrett.estimotemirror.estimote.Product;
+import com.example.tombarrett.estimotemirror.shop.Product;
 import com.example.tombarrett.estimotemirror.estimote.ShowroomManager;
 import com.example.tombarrett.estimotemirror.presenter.MainActivityPresenter;
-
+import com.example.tombarrett.estimotemirror.shop.WearableProduct;
 import android.widget.Button;
 import android.content.Intent;
 import android.widget.Toast;
-import java.util.HashMap;
 import java.util.Map;
 import static com.example.tombarrett.estimotemirror.R.layout.activity_main;
 
-
 public class MainActivity extends AppCompatActivity {
-    private MirrorContextManager ctxMgr;
-    private static final String TAG = "MainActivity";
     private ShowroomManager showroomManager;
     private Map<NearableID, Product> products;
     private Context context=this;
@@ -72,14 +59,12 @@ public class MainActivity extends AppCompatActivity {
 
         setButtons();
 
-        this.ctxMgr = MirrorContextManager.createMirrorContextManager(this);
+        mainActivityPresenter.initialiseMirror();
 
-        products = new HashMap<>();
-        populateProducts();
+        products=mainActivityPresenter.products();
 
         showroomManager = new ShowroomManager(this, products);
         showroomManager.setListener(new ShowroomManager.Listener() {
-            private Product product;
             @Override
             public void onProductPickup(final Product product) {
                 if(product!=tempProduct) {
@@ -89,13 +74,12 @@ public class MainActivity extends AppCompatActivity {
             }
             @Override
             public void onProductPutdown(Product product) {
-                // tempProduct=product;
             }
         });
     }
 
     public void selectRadioButton() {
-        if(product.getWearable()) {
+        if(product instanceof WearableProduct) {
             radioButton = (RadioButton) findViewById(R.id.radioButton6);
             radioButton2 = (RadioButton) findViewById(R.id.radioButton7);
             radioButton3 = (RadioButton) findViewById(R.id.radioButton10);
@@ -195,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
         RadioButton radioButton4 = (RadioButton) findViewById(R.id.radioButton);
         RadioButton radioButton5 = (RadioButton) findViewById(R.id.radioButton5);
         RadioButton radioButton6 = (RadioButton) findViewById(R.id.radioButton11);
-        if((radioButton.isChecked() || radioButton2.isChecked() || radioButton3.isChecked()) && (radioButton4.isChecked() || radioButton5.isChecked() || radioButton6.isChecked()) && product.getWearable())
+        if((radioButton.isChecked() || radioButton2.isChecked() || radioButton3.isChecked()) && (radioButton4.isChecked() || radioButton5.isChecked() || radioButton6.isChecked()) && product instanceof WearableProduct)
             selected=true;
         else if(radioButton4.isChecked() || radioButton5.isChecked() || radioButton6.isChecked())
             selected=true;
@@ -214,22 +198,6 @@ public class MainActivity extends AppCompatActivity {
         if(radioButton6.isChecked())
             colour=radioButton6.getText().toString();
         return selected;
-    }
-
-
-    public void populateProducts(){
-        products.put(new NearableID("22aaab0c27180003"), new ProductBuilder("Bike",
-                "Lovely Bike, much fast","€150")
-                .image(R.drawable.bike)
-                .template("bike")
-                .wearable(false)
-                .build());
-        products.put(new NearableID("1e35554b0afec7ab"), new ProductBuilder("Running Shoes",
-                "These running shoes are like, the best","€99")
-                .image(R.drawable.shoe2)
-                .template("retail")
-                .wearable(true)
-                .build());
     }
 
     public void setButtons(){
@@ -266,11 +234,6 @@ public class MainActivity extends AppCompatActivity {
         startActivity(i);
     }
 
-    public void destroyMirror(){
-        ctxMgr.destroy();
-        this.ctxMgr = MirrorContextManager.createMirrorContextManager(this);
-    }
-
     public void updateViews(Product product){
         ((TextView) findViewById(R.id.titleLabel)).setText(product.getName());
         ((TextView) findViewById(R.id.descriptionLabel)).setText(product.getSummary());
@@ -288,7 +251,7 @@ public class MainActivity extends AppCompatActivity {
         ImageView img= (ImageView) findViewById(R.id.profile_image);
         img.setImageResource(product.getImage());
 
-        if(product.getWearable()) {
+        if(product instanceof WearableProduct) {
             findViewById(R.id.radioButton6).setVisibility(android.view.View.VISIBLE);
             findViewById(R.id.radioButton7).setVisibility(android.view.View.VISIBLE);
             findViewById(R.id.radioButton10).setVisibility(android.view.View.VISIBLE);
@@ -310,7 +273,7 @@ public class MainActivity extends AppCompatActivity {
         alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                destroyMirror();
+                mainActivityPresenter.destroyMirror();
                 setContentView(activity_main);
                 pickup(product, true);
                 tempProduct = product;
@@ -335,12 +298,12 @@ public class MainActivity extends AppCompatActivity {
         mainActivityPresenter.pickup(product);
         updateViews(product);
         if(mirror)
-            mirror(product.getTemplate());
+            mainActivityPresenter.Mirror(product.getTemplate());
     }
 
     public void redeemCoupon(){
         if(checkRadioButtons()) {
-            destroyMirror();
+            mainActivityPresenter.destroyMirror();
             String name = ((TextView) findViewById(R.id.titleLabel)).getText().toString();
             String price = ((TextView) findViewById(R.id.priceLabel)).getText().toString();
             String message = "Product: " + name + " \nPrice: " + price+"\nSize: "+size+"\nColour: "+colour;
@@ -353,31 +316,18 @@ public class MainActivity extends AppCompatActivity {
                     Toast.LENGTH_LONG).show();
     }
 
-    public void mirror(String template){
-        destroyMirror();
-        this.ctxMgr = MirrorContextManager.createMirrorContextManager(this);
-        IMirrorManager mirrorManager=new MirrorManager(template,ctxMgr);
-        mirrorManager.castToMirror();
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
         if (!SystemRequirementsChecker.checkWithDefaultDialogs(this)) {
-            Log.e(TAG, "Can't scan for beacons, some pre-conditions were not met");
-            Log.e(TAG, "Read more about what's required at: http://estimote.github.io/Android-SDK/JavaDocs/com/estimote/sdk/SystemRequirementsChecker.html");
-            Log.e(TAG, "If this is fixable, you should see a popup on the app's screen right now, asking to enable what's necessary");
         } else {
-            Log.d(TAG, "Starting ShowroomManager updates");
             showroomManager.startUpdates();
         }
     }
 
-
     @Override
     protected void onPause() {
         super.onPause();
-        Log.d(TAG, "Stopping ShowroomManager updates");
         showroomManager.stopUpdates();
     }
 
@@ -385,7 +335,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         showroomManager.destroy();
-        ctxMgr.destroy();
+        mainActivityPresenter.destroy();
     }
-
 }

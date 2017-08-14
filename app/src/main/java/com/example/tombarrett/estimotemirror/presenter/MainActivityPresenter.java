@@ -5,14 +5,21 @@ import android.database.Cursor;
 import android.util.Log;
 
 import com.estimote.coresdk.common.config.EstimoteSDK;
+import com.estimote.sdk.mirror.context.MirrorContextManager;
+import com.example.tombarrett.estimotemirror.R;
 import com.example.tombarrett.estimotemirror.awsSNS.AWSSNSManager;
 import com.example.tombarrett.estimotemirror.awsSNS.IAWSSNSManager;
 import com.example.tombarrett.estimotemirror.database.DatabaseHelper;
 import com.example.tombarrett.estimotemirror.database.IDatabaseHelper;
-import com.example.tombarrett.estimotemirror.estimote.Product;
-import com.example.tombarrett.estimotemirror.userDetails.UserDetails;
+import com.example.tombarrett.estimotemirror.estimote.NearableID;
+import com.example.tombarrett.estimotemirror.mirror.IMirrorManager;
+import com.example.tombarrett.estimotemirror.mirror.MirrorManager;
+import com.example.tombarrett.estimotemirror.shop.Product;
+import com.example.tombarrett.estimotemirror.shop.ProductBuilder;
 
-import static com.estimote.coresdk.common.config.EstimoteSDK.getApplicationContext;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by tombarrett on 11/08/2017.
@@ -23,6 +30,7 @@ public class MainActivityPresenter {
     private IDatabaseHelper dbHelper;
     private Context context;
     private Cursor resultSet;
+    private MirrorContextManager ctxMgr;
 
     public MainActivityPresenter(Context context){
         this.context=context;
@@ -54,6 +62,10 @@ public class MainActivityPresenter {
         awssnsManager.publishMessageToShopAssistant((product.getEmailMessageSA(resultSet.getString(1), resultSet.getString(5))), "Customer is interested in a product!");
     }
 
+    public void initialiseMirror(){
+        this.ctxMgr = MirrorContextManager.createMirrorContextManager(context);
+    }
+
     public void pickup(Product product){
         connectToDB();
         resultSet=getDetails();
@@ -66,4 +78,35 @@ public class MainActivityPresenter {
         disconnectToDB();
     }
 
+    public Map<NearableID, Product> products(){
+        Map<NearableID, Product> products= new HashMap<NearableID, Product>();
+        products.put(new NearableID("22aaab0c27180003"), new ProductBuilder("Bike",
+                "Lovely Bike, much fast","€150")
+                .image(R.drawable.bike)
+                .template("bike")
+                .build());
+        products.put(new NearableID("1e35554b0afec7ab"), new ProductBuilder("Running Shoes",
+                "These running shoes are like, the best","€99")
+                .image(R.drawable.shoe2)
+                .template("retail")
+                .wearable()
+                .build());
+        return products;
+    }
+
+    public void Mirror(String template){
+        destroyMirror();
+        this.ctxMgr = MirrorContextManager.createMirrorContextManager(context);
+        IMirrorManager mirrorManager=new MirrorManager(template,ctxMgr);
+        mirrorManager.castToMirror();
+    }
+
+    public void destroyMirror(){
+        ctxMgr.destroy();
+        this.ctxMgr = MirrorContextManager.createMirrorContextManager(context);
+    }
+
+    public void destroy(){
+        ctxMgr.destroy();
+    }
 }

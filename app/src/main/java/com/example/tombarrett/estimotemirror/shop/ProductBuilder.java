@@ -1,4 +1,4 @@
-package com.example.tombarrett.estimotemirror.estimote;
+package com.example.tombarrett.estimotemirror.shop;
 
 /**
  * Created by tombarrett on 11/08/2017.
@@ -11,7 +11,7 @@ public class ProductBuilder {
     public String template;
     public int image;
     public String price;
-    public boolean wearable;
+    public boolean wearable=false;
 
     public ProductBuilder(String name, String summary, String price){
         this.name=name;
@@ -29,12 +29,16 @@ public class ProductBuilder {
         return this;
     }
 
-    public ProductBuilder wearable(boolean wearable){
-        this.wearable=wearable;
+    public ProductBuilder wearable(){
+        this.wearable=true;
         return this;
     }
 
     public Product build(){
-        return new Product(this);
+        if(wearable) {
+            return new WearableProduct(this);
+        }
+        else
+            return new NonWearableProduct(this);
     }
 }

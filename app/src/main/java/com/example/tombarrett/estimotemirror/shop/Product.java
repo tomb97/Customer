@@ -1,11 +1,5 @@
-package com.example.tombarrett.estimotemirror.estimote;
+package com.example.tombarrett.estimotemirror.shop;
 
-import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
-
-import static android.content.Context.MODE_PRIVATE;
 import static android.database.sqlite.SQLiteDatabase.openOrCreateDatabase;
 
 /**
@@ -14,15 +8,13 @@ import static android.database.sqlite.SQLiteDatabase.openOrCreateDatabase;
  * These products are used in the shop.
  */
 
-public class Product {
+public abstract class Product {
 
     private String name;
     private String summary;
     private String template;
     private int image;
-    private String emailMessageSA;
     private String price;
-    private boolean wearable;
 
     public Product(ProductBuilder builder){
         this.name = builder.name;
@@ -30,7 +22,6 @@ public class Product {
         this.template=builder.template;
         this.image=builder.image;
         this.price=builder.price;
-        this.wearable=builder.wearable;
     }
 
     public String getName() {
@@ -45,17 +36,11 @@ public class Product {
 
     public int getImage(){ return image; }
 
-    public boolean getWearable(){
-        return wearable;
-    }
 
     public String getPrice() { return price; }
 
     public String getEmailMessageSA(String name, String size){
-        emailMessageSA= ("Customer " + name + " is interested in " + getName());
-        if(wearable)
-            emailMessageSA+=" in size " + size;
-        emailMessageSA+=". This product is in stock!";
+        String emailMessageSA= "";
         return emailMessageSA;
     }
 }
