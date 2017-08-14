@@ -6,7 +6,9 @@ import android.util.Log;
 
 import com.estimote.coresdk.common.config.EstimoteSDK;
 import com.example.tombarrett.estimotemirror.awsSNS.AWSSNSManager;
+import com.example.tombarrett.estimotemirror.awsSNS.IAWSSNSManager;
 import com.example.tombarrett.estimotemirror.database.DatabaseHelper;
+import com.example.tombarrett.estimotemirror.database.IDatabaseHelper;
 import com.example.tombarrett.estimotemirror.estimote.Product;
 import com.example.tombarrett.estimotemirror.userDetails.UserDetails;
 
@@ -18,7 +20,7 @@ import static com.estimote.coresdk.common.config.EstimoteSDK.getApplicationConte
 
 public class MainActivityPresenter {
 
-    private DatabaseHelper dbHelper;
+    private IDatabaseHelper dbHelper;
     private Context context;
     private Cursor resultSet;
 
@@ -48,7 +50,7 @@ public class MainActivityPresenter {
     }
 
     public void sendEmailtoSA(Product product, Cursor resultSet){
-        AWSSNSManager awssnsManager = new AWSSNSManager();
+        IAWSSNSManager awssnsManager = new AWSSNSManager();
         awssnsManager.publishMessageToShopAssistant((product.getEmailMessageSA(resultSet.getString(1), resultSet.getString(5))), "Customer is interested in a product!");
     }
 

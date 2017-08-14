@@ -21,7 +21,7 @@ import org.json.JSONObject;
  * This class does not specify a specific mirror but you can select them by mirror ID.
  */
 
-public class MirrorManager {
+public class MirrorManager implements IMirrorManager{
 
     private String template;
     private MirrorContextManager ctxMgr;

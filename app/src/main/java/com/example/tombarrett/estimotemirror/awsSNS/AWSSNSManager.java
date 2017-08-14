@@ -34,7 +34,7 @@ import com.amazonaws.services.sns.model.PublishRequest;
  * The AWS connection is running on a separate thread.
  */
 
-public class AWSSNSManager {
+public class AWSSNSManager implements IAWSSNSManager{
 
     private AmazonSNSClient snsClient;
     private Runnable publish(final String message, final String subject, final String arn) {
@@ -42,7 +42,7 @@ public class AWSSNSManager {
             @Override
             public void run() {
             try {
-                snsClient = new AmazonSNSClient(new BasicAWSCredentials());
+                snsClient = new AmazonSNSClient(new BasicAWSCredentials("",""));
                 snsClient.setRegion(Region.getRegion(Regions.EU_WEST_1));
                 PublishRequest publishRequest = new PublishRequest();
                 publishRequest.setMessage(message);

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 
 import com.example.tombarrett.estimotemirror.database.DatabaseHelper;
+import com.example.tombarrett.estimotemirror.database.IDatabaseHelper;
 import com.example.tombarrett.estimotemirror.userDetails.UserDetails;
 
 /**
@@ -12,7 +13,7 @@ import com.example.tombarrett.estimotemirror.userDetails.UserDetails;
 
 public class UserDetailsPresenter {
 
-    private DatabaseHelper dbhelper;
+    private IDatabaseHelper dbhelper;
     private Context context;
 
     public UserDetailsPresenter(Context context){

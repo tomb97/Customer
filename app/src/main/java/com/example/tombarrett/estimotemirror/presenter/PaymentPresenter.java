@@ -6,7 +6,9 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.tombarrett.estimotemirror.awsSNS.AWSSNSManager;
+import com.example.tombarrett.estimotemirror.awsSNS.IAWSSNSManager;
 import com.example.tombarrett.estimotemirror.database.DatabaseHelper;
+import com.example.tombarrett.estimotemirror.database.IDatabaseHelper;
 
 /**
  * Created by tombarrett on 11/08/2017.
@@ -15,7 +17,7 @@ import com.example.tombarrett.estimotemirror.database.DatabaseHelper;
 public class PaymentPresenter {
 
     private String snsMessage;
-    private DatabaseHelper dbhelper;
+    private IDatabaseHelper dbhelper;
     private Cursor resultSet;
     private Context context;
 
@@ -39,7 +41,7 @@ public class PaymentPresenter {
         if(resultSet==null)
             Log.d("SNS","null");
         if (resultSet != null && resultSet.moveToFirst()) {
-            AWSSNSManager awssnsManager = new AWSSNSManager();
+            IAWSSNSManager awssnsManager = new AWSSNSManager();
             awssnsManager.publishMessageToCustomer(("Digital Receipt\n"+snsMessage+"\nName: "+resultSet.getString(1)+ "\nAddress: "+resultSet.getString(3)+"."),"Receipt");
         }
         else{

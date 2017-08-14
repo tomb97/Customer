@@ -16,7 +16,7 @@ import static android.database.sqlite.SQLiteDatabase.openOrCreateDatabase;
  * and therefore little changes outside this class would be needed.
  */
 
-public class DatabaseHelper {
+public class DatabaseHelper implements IDatabaseHelper{
     private SQLiteDatabase db;
     private Context context;
 

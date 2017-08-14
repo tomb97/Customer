@@ -16,6 +16,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import com.estimote.sdk.mirror.context.MirrorContextManager;
 import com.example.tombarrett.estimotemirror.estimote.ProductBuilder;
+import com.example.tombarrett.estimotemirror.mirror.IMirrorManager;
 import com.example.tombarrett.estimotemirror.mirror.MirrorManager;
 import com.example.tombarrett.estimotemirror.R;
 import com.example.tombarrett.estimotemirror.awsSNS.AWSSNSManager;
@@ -355,7 +356,7 @@ public class MainActivity extends AppCompatActivity {
     public void mirror(String template){
         destroyMirror();
         this.ctxMgr = MirrorContextManager.createMirrorContextManager(this);
-        MirrorManager mirrorManager=new MirrorManager(template,ctxMgr);
+        IMirrorManager mirrorManager=new MirrorManager(template,ctxMgr);
         mirrorManager.castToMirror();
     }
 

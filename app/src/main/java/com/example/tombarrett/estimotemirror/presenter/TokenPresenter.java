@@ -2,6 +2,7 @@ package com.example.tombarrett.estimotemirror.presenter;
 
 import com.example.tombarrett.estimotemirror.R;
 import com.example.tombarrett.estimotemirror.awsSNS.AWSSNSManager;
+import com.example.tombarrett.estimotemirror.awsSNS.IAWSSNSManager;
 import com.example.tombarrett.estimotemirror.token.Token;
 
 import java.text.ParseException;
@@ -20,7 +21,7 @@ public class TokenPresenter {
     }
 
     public void sentExpiryReminder(Token tempToken){
-        AWSSNSManager awssnsManager = new AWSSNSManager();
+        IAWSSNSManager awssnsManager = new AWSSNSManager();
         awssnsManager.publishMessageForNearExpiredToken(("Token: "+tempToken.getName()+" is near expiry!\nExpiry Date: "+tempToken.getDate()),"Token near expiry date!");
     }
 
