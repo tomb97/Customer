@@ -13,10 +13,9 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import com.example.tombarrett.estimotemirror.R;
 import com.example.tombarrett.estimotemirror.estimote.NearableID;
-import com.example.tombarrett.estimotemirror.shop.Product;
+import com.example.tombarrett.estimotemirror.shop.*;
 import com.example.tombarrett.estimotemirror.estimote.ShowroomManager;
 import com.example.tombarrett.estimotemirror.presenter.MainActivityPresenter;
-import com.example.tombarrett.estimotemirror.shop.WearableProduct;
 import android.widget.Button;
 import android.content.Intent;
 import android.widget.Toast;
@@ -53,16 +52,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void initiateListeners(){
         mainActivityPresenter.initialiseEstimote();
-
         Toast.makeText(this, "Please maintain user details by clicking on the User Details button.\nOnce this is done, pick up a product for more information.",
                 Toast.LENGTH_LONG).show();
-
         setButtons();
-
         mainActivityPresenter.initialiseMirror();
-
         products=mainActivityPresenter.products();
-
         showroomManager = new ShowroomManager(this, products);
         showroomManager.setListener(new ShowroomManager.Listener() {
             @Override
@@ -96,7 +90,6 @@ public class MainActivity extends AppCompatActivity {
                     radioButton3.setChecked(true);
             }
             mainActivityPresenter.disconnectToDB();
-
             radioButton.setOnClickListener(new android.view.View.OnClickListener() {
                 @Override
                 public void onClick(android.view.View view) {
@@ -119,7 +112,6 @@ public class MainActivity extends AppCompatActivity {
         radioButton4 = (RadioButton) findViewById(R.id.radioButton);
         radioButton5 = (RadioButton) findViewById(R.id.radioButton11);
         radioButton6 = (RadioButton) findViewById(R.id.radioButton5);
-
         radioButton4.setOnClickListener(new android.view.View.OnClickListener() {
             @Override
             public void onClick(android.view.View view) {
@@ -172,7 +164,6 @@ public class MainActivity extends AppCompatActivity {
 
     public boolean checkRadioButtons(){
         boolean selected;
-
         RadioButton radioButton = (RadioButton) findViewById(R.id.radioButton6);
         RadioButton radioButton2 = (RadioButton) findViewById(R.id.radioButton7);
         RadioButton radioButton3 = (RadioButton) findViewById(R.id.radioButton10);
@@ -280,7 +271,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         setContentView(image);
-
         alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
