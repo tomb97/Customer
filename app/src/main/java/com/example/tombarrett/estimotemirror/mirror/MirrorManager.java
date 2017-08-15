@@ -11,6 +11,9 @@ import com.estimote.sdk.mirror.core.connection.Dictionary;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by tombarrett on 02/08/2017.
  * This class handles display requests to the estimote mirror.
@@ -25,15 +28,16 @@ public class MirrorManager implements IMirrorManager{
 
     private String template;
     private MirrorContextManager ctxMgr;
+    private List<Dictionary> dictionaries;
 
     public MirrorManager(String template, MirrorContextManager ctxMgr){
         this.template=template;
         this.ctxMgr=ctxMgr;
+        createDictionary();
     }
 
-    public void castToMirror(){
-        this.ctxMgr.clearDisplayRequests();
-
+    public void createDictionary(){
+        dictionaries=new ArrayList<Dictionary>();
         Dictionary dictionary2 = new Dictionary();
         dictionary2.setTemplate(template);
         dictionary2.put("zone","near");
@@ -42,7 +46,14 @@ public class MirrorManager implements IMirrorManager{
         dictionary.setTemplate(template);
         dictionary.put("zone","mid");
 
-        this.ctxMgr.display(dictionary, Zone.FAR, new DisplayCallback() {
+        dictionaries.add(dictionary);
+        dictionaries.add(dictionary2);
+    }
+
+    public void castToMirror(){
+        this.ctxMgr.clearDisplayRequests();
+
+        this.ctxMgr.display(dictionaries.get(0), Zone.FAR, new DisplayCallback() {
 
             @Override
             public void onDataDisplayed() {
@@ -65,7 +76,7 @@ public class MirrorManager implements IMirrorManager{
             }
         });
 
-        this.ctxMgr.display(dictionary2, Zone.NEAR, new DisplayCallback() {
+        this.ctxMgr.display(dictionaries.get(1), Zone.NEAR, new DisplayCallback() {
 
             @Override
             public void onDataDisplayed() {

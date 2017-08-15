@@ -8,4 +8,5 @@ public interface IAWSSNSManager {
     void publishMessageToShopAssistant(String message, String subject);
     void publishMessageToCustomer(String message, String subject);
     void publishMessageForNearExpiredToken(String message, String subject);
+    void startThread(String message, String subject, String TargetARN);
 }

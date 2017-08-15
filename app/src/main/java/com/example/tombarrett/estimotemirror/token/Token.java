@@ -56,4 +56,6 @@ public class Token {
     public String getDate() {
         return date;
     }
+
+    public int getPoints(){ return points;}
 }

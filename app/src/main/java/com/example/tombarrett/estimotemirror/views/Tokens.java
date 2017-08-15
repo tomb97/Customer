@@ -60,7 +60,7 @@ public class Tokens extends AppCompatActivity {
         androidListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                toastMessage((tokens.get(i).getDescription()+"\nExpiry Date: "+tokens.get(i).getDate()),tokens.get(i));
+                toastMessage((tokens.get(i).getDescription()+"\nExpiry Date: "+tokens.get(i).getDate()+"\nPoints: "+tokens.get(i).getPoints()),tokens.get(i));
             }
         });
     }

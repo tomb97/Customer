@@ -5,5 +5,6 @@ package com.example.tombarrett.estimotemirror.mirror;
  */
 
 public interface IMirrorManager {
+    void createDictionary();
     void castToMirror();
 }

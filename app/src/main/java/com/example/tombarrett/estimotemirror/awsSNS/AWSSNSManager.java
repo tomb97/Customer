@@ -63,22 +63,22 @@ public class AWSSNSManager implements IAWSSNSManager{
     public void publishMessageToShopAssistant(String message, String subject){
         Log.d("sns",(message+subject));
         String TargetARN="arn:aws:sns:eu-west-1:151762801558:Estimote";
-        Runnable myRunnable = publish(message,subject,TargetARN);
-        Thread thread = new Thread(myRunnable);
-        thread.start();
+        startThread(message,subject,TargetARN);
     }
 
     public void publishMessageToCustomer(String message, String subject){
         Log.d("sns",(message+subject));
         String TargetARN="arn:aws:sns:eu-west-1:151762801558:Receipt";
-        Runnable myRunnable = publish(message,subject,TargetARN);
-        Thread thread = new Thread(myRunnable);
-        thread.start();
+        startThread(message,subject,TargetARN);
     }
 
     public void publishMessageForNearExpiredToken(String message, String subject){
         Log.d("sns",(message+subject));
         String TargetARN="arn:aws:sns:eu-west-1:151762801558:Receipt";
+        startThread(message,subject,TargetARN);
+    }
+
+    public void startThread(String message, String subject, String TargetARN){
         Runnable myRunnable = publish(message,subject,TargetARN);
         Thread thread = new Thread(myRunnable);
         thread.start();
