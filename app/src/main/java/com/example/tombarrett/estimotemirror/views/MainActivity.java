@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private ShowroomManager showroomManager;
     private Map<NearableID, Product> products;
     private Context context=this;
-    private Product tempProduct;
+    private Product tempProduct=null;
     private RadioButton radioButton;
     private RadioButton radioButton2;
     private RadioButton radioButton3;
