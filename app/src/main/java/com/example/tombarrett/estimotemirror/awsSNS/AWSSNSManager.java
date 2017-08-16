@@ -42,7 +42,7 @@ public class AWSSNSManager implements IAWSSNSManager{
             @Override
             public void run() {
             try {
-                snsClient = new AmazonSNSClient(new BasicAWSCredentials("",""));
+                snsClient = new AmazonSNSClient(new BasicAWSCredentials("AKIAIQYUKND43O5TQVEA","2xXNqOWWfeQd+PdcYZjGSz3Rhtn/pjEKdQZppL5M"));
                 snsClient.setRegion(Region.getRegion(Regions.EU_WEST_1));
                 PublishRequest publishRequest = new PublishRequest();
                 publishRequest.setMessage(message);

@@ -1,9 +1,7 @@
 package com.example.tombarrett.estimotemirror.presenter;
-
 import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
-
 import com.estimote.coresdk.common.config.EstimoteSDK;
 import com.estimote.sdk.mirror.context.MirrorContextManager;
 import com.example.tombarrett.estimotemirror.R;
@@ -16,9 +14,7 @@ import com.example.tombarrett.estimotemirror.mirror.IMirrorManager;
 import com.example.tombarrett.estimotemirror.mirror.MirrorManager;
 import com.example.tombarrett.estimotemirror.shop.Product;
 import com.example.tombarrett.estimotemirror.shop.ProductBuilder;
-
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -80,7 +76,7 @@ public class MainActivityPresenter {
 
     public Map<NearableID, Product> products(){
         Map<NearableID, Product> products= new HashMap<NearableID, Product>();
-        products.put(new NearableID("22aaab0c27180003"), new ProductBuilder("Bike",
+        products.put(new NearableID("2d088f71be8bc22f"), new ProductBuilder("Bike",
                 "Lovely Bike, much fast","€150")
                 .image(R.drawable.bike)
                 .template("bike")
